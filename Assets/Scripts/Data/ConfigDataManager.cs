@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 
 class ConfigDataManager : MonoBehaviour {
     public string inputConfigOverride;
+    public string osdConfigOverride;
 
     private string[] subFolders = {
         "",
@@ -20,10 +22,8 @@ class ConfigDataManager : MonoBehaviour {
         private set;
     }
 
-    public List<string> osdElements {
-        get;
-        private set;
-    }
+    public List<string> osdElements = new List<string>();
+    public bool uiRebuild;
 
     void Awake() {
         Reload();
@@ -35,7 +35,12 @@ class ConfigDataManager : MonoBehaviour {
         }
 
         if (inputConfigOverride != "") {
+            input = null;
             PlayerPrefs.SetString("inputConfig", inputConfigOverride);
+        }
+        if (osdConfigOverride != "") {
+            osdElements = new List<string>(); // make sure it loads
+            PlayerPrefs.SetString("osdConfig", osdConfigOverride);
         }
 
         foreach (string f in subFolders) {
@@ -71,6 +76,19 @@ class ConfigDataManager : MonoBehaviour {
                     input.Deserialize(elem);
                 }
             }
+        }
+
+        if (osdElements.Count == 0) {
+            if (!PlayerPrefs.HasKey("osdConfig")) {
+                PlayerPrefs.SetString("osdConfig", "input,");
+            }
+            osdElements = PlayerPrefs.GetString("osdConfig").Split(',').ToList();
+            uiRebuild = true;
+        }
+        else {
+            string str = "";
+            osdElements.ForEach((string s) => str += s + ",");
+            PlayerPrefs.SetString("osdConfig", str);
         }
     }
 }
