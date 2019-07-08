@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfefb9a147a288409e2832dca147f2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputConfigOverride: C:\Users\mirco.heitmann\AppData\LocalLow\Ryz\copters I\input\xbox.xml
+  inputConfigOverride: C:\Users\mirco.heitmann\AppData\LocalLow\Ryz\OpenRotor\input\xbox.xml
   osdConfigOverride: input,
   osdElements: []
   uiRebuild: 0
@@ -169,6 +169,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae6008ca5fd9cb4498b2be7ae97b0a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  osdSprites:
+  - {fileID: 21300000, guid: d99e4efaa15e3f6468e8e0a18fecc0a9, type: 3}
+  - {fileID: 21300000, guid: 2e1fc25d4175ed54eb20ecd74941bbdd, type: 3}
 --- !u!1001 &169267402
 Prefab:
   m_ObjectHideFlags: 0

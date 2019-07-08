@@ -3,9 +3,13 @@ using System.Linq;
 using UnityEngine;
 
 public class OSDManager : MonoBehaviour {
+    public List<Sprite> osdSprites;
+
     public List<OSDElement> elements = new List<OSDElement>();
 
     private ConfigDataManager config;
+    private int resXCache;
+    private int resYCache;
 
     void Start() {
         GameObject go = GameObject.Find("dataManager");
@@ -28,16 +32,18 @@ public class OSDManager : MonoBehaviour {
             switch (s) {
                 case "input":
                     elements.Add(new OSDInput());
-                    elements.Last().Build();
+                    elements.Last().Build(osdSprites);
                     break;
             }
         }
     }
 
     void Update() {
-        if (config.uiRebuild) {
+        if (config.uiRebuild || Screen.width != resXCache || Screen.height != resYCache) {
             Rebuild();
             config.uiRebuild = false;
+            resXCache = Screen.width;
+            resYCache = Screen.height;
         }
 
         foreach (OSDElement elem in elements) {

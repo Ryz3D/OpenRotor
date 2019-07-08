@@ -60,7 +60,6 @@ class ConfigDataManager : MonoBehaviour {
         }
         else {
             string path = PlayerPrefs.GetString("inputConfig");
-            Debug.Log("using input config '" + path + "'");
             if (fs.WhatIs(path) == FileType.Nonexistent) {
                 Debug.LogError("couldn't find inputConfig '" + path + "'");
             }
