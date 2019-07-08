@@ -1,0 +1,163 @@
+fileFormatVersion: 2
+guid: 6118e1983da4d8144a674102924cc7b6
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: cam_mount
+    100002: camera
+    100004: ducts
+    100006: fc
+    100008: frame
+    100010: frame_support
+    100012: ground
+    100014: lipo
+    100016: lipo_connector
+    100018: lipo_mount
+    100020: motor_mounts
+    100022: motors
+    100024: props
+    100026: rx_antenna
+    100028: //RootNode
+    400000: cam_mount
+    400002: camera
+    400004: ducts
+    400006: fc
+    400008: frame
+    400010: frame_support
+    400012: ground
+    400014: lipo
+    400016: lipo_connector
+    400018: lipo_mount
+    400020: motor_mounts
+    400022: motors
+    400024: props
+    400026: rx_antenna
+    400028: //RootNode
+    2100000: unnamed
+    2300000: cam_mount
+    2300002: camera
+    2300004: ducts
+    2300006: fc
+    2300008: frame
+    2300010: frame_support
+    2300012: ground
+    2300014: lipo
+    2300016: lipo_connector
+    2300018: lipo_mount
+    2300020: motor_mounts
+    2300022: motors
+    2300024: props
+    2300026: rx_antenna
+    3300000: cam_mount
+    3300002: camera
+    3300004: ducts
+    3300006: fc
+    3300008: frame
+    3300010: frame_support
+    3300012: ground
+    3300014: lipo
+    3300016: lipo_connector
+    3300018: lipo_mount
+    3300020: motor_mounts
+    3300022: motors
+    3300024: props
+    3300026: rx_antenna
+    4300000: ground
+    4300002: cam_mount
+    4300004: camera
+    4300006: rx_antenna
+    4300008: lipo_connector
+    4300010: fc
+    4300012: lipo
+    4300014: props
+    4300016: motors
+    4300018: lipo_mount
+    4300020: ducts
+    4300022: frame_support
+    4300024: motor_mounts
+    4300026: frame
+    7400000: Default Take
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
