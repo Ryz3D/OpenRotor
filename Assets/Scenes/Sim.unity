@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputConfigOverride: C:\Users\mirco.heitmann\AppData\LocalLow\Ryz\OpenRotor\input\xbox.xml
-  osdConfigOverride: input,
+  osdConfigOverride: 
   osdElements: []
   uiRebuild: 0
 --- !u!114 &126788869
