@@ -230,8 +230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfefb9a147a288409e2832dca147f2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputConfigOverride: C:\Users\mirco.heitmann\AppData\LocalLow\Ryz\OpenRotor\input\xbox.xml
-  osdConfigOverride: input,speed,
+  inputConfigOverride: C:\Users\mirco.heitmann\AppData\LocalLow\Ryz\OpenRotor\input\taranis.xml
+  osdConfigOverride: input,speed,altitude,timer,distance,voltage,current,power,capacity,
   osdElements: []
   uiRebuild: 0
 --- !u!114 &126788869
@@ -290,15 +290,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_LocalScale.x
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_LocalScale.y
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_LocalScale.z
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_Enabled
@@ -666,10 +666,10 @@ Camera:
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_SensorSize: {x: 36, y: 24}
+  m_projectionMatrixMode: 2
+  m_SensorSize: {x: 6.2, y: 3.6}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
+  m_FocalLength: 1.8
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -678,7 +678,7 @@ Camera:
     height: 1
   near clip plane: 0.05
   far clip plane: 1000
-  field of view: 100
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -979,6 +979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27043840ec0033d499167685edcd0e8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleThrottle: 0
   prRate: 0.6
   prExpo: 0.9
   yRate: 0.5
@@ -1204,6 +1205,7 @@ GameObject:
   - component: {fileID: 1289625322}
   - component: {fileID: 1289625321}
   - component: {fileID: 1289625325}
+  - component: {fileID: 1289625326}
   - component: {fileID: 1289625324}
   m_Layer: 0
   m_Name: kwad
@@ -1219,7 +1221,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1289625319}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 21.13, z: -38.94}
+  m_LocalPosition: {x: 0, y: 13.1, z: -28.39}
   m_LocalScale: {x: 0.4, y: 0.1, z: 0.4}
   m_Children:
   - {fileID: 534669905}
@@ -1291,16 +1293,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27043840ec0033d499167685edcd0e8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleThrottle: 0.04
   prRate: 1.4
   prExpo: 0.7
   yRate: 1.2
-  yExpo: 0.4
-  thrust: 50
-  Cd: 0.3
+  yExpo: 0.7
+  thrust: 32
+  Cd: 0.85
   areaTop: 0.0064
   areaFront: 0.0025
   defaultRotDrag: 6
-  idleRotDrag: 12
+  idleRotDrag: 11.5
   forceMode: 0
   torqueMode: 0
 --- !u!54 &1289625325
@@ -1318,6 +1321,94 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &1289625326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1289625319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 580adbcbb8f03404f97221a112ea1099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voltageCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3
+      inSlope: 3.291576
+      outSlope: 3.291576
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.55219
+    - serializedVersion: 3
+      time: 0.17242065
+      value: 3.4894059
+      inSlope: 2.3824377
+      outSlope: 2.3824377
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.8499436
+      outWeight: 0.098741844
+    - serializedVersion: 3
+      time: 1
+      value: 4.2
+      inSlope: 0.25290176
+      outSlope: 0.25290176
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.38688743
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maximumCurrentCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 988.2354
+      outSlope: 988.2354
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.25786468
+    - serializedVersion: 3
+      time: 0.25802165
+      value: 148.28406
+      inSlope: 182.64877
+      outSlope: 182.64877
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 200
+      inSlope: 8.478207
+      outSlope: 8.478207
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.34250736
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  doesDischarge: 1
+  doesSag: 1
+  cellCount: 4
+  capacity: 1.55
+  internalResistance: 0.003
+  sagRecovery: 10
+  currentDelivery: 55
+  cellDeviation: 0.1
+  cellCapacities: []
+  expectedCurrent: 0
+  actualCurrent: 0
 --- !u!1 &1438341566
 GameObject:
   m_ObjectHideFlags: 0

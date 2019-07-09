@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OSDSpeed : OSDElement {
+public class OSDVoltage : OSDElement {
     private RectTransform rect;
     private Text text;
-    private Rigidbody rb;
+    private Lipo lipo;
 
     private ConfigDataManager config;
 
@@ -13,7 +13,10 @@ public class OSDSpeed : OSDElement {
         text = gameObject.AddComponent<Text>();
         GameObject[] copters = GameObject.FindGameObjectsWithTag("copter");
         if (copters.Length > 0) {
-            rb = copters[0].GetComponent<Rigidbody>();
+            lipo = copters[0].GetComponent<Lipo>();
+            if (lipo == null) {
+                lipo = copters[0].GetComponentInChildren<Lipo>();
+            }
         }
         GameObject go = GameObject.Find("dataManager");
 		if (go == null) {
@@ -24,8 +27,8 @@ public class OSDSpeed : OSDElement {
 			config.Reload();
 		}
 
-        rect.anchorMin = new Vector2(0.02f, 0.9f);
-        rect.anchorMax = new Vector2(0.2f, 1.0f);
+        rect.anchorMin = new Vector2(0.82f, 0.9f);
+        rect.anchorMax = new Vector2(1.0f, 1.0f);
         rect.offsetMin = rect.offsetMax = Vector2.zero;
         rect.anchoredPosition = Vector2.zero;
         rect.sizeDelta = Vector2.zero;
@@ -38,8 +41,8 @@ public class OSDSpeed : OSDElement {
     }
 
     public override void Update() {
-        if (rb != null) {
-            text.text = "SPD  " + Mathf.Round(rb.velocity.magnitude * 3.6f).ToString() + "km/h";
+        if (lipo != null) {
+            text.text = "VOL  " + (Mathf.Round(lipo.totalVoltage * 100.0f) / 100.0f).ToString() + "V";
         }
     }
 }

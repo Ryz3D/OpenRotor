@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OSDSpeed : OSDElement {
+public class OSDTimer : OSDElement {
     private RectTransform rect;
     private Text text;
     private Rigidbody rb;
@@ -24,8 +24,8 @@ public class OSDSpeed : OSDElement {
 			config.Reload();
 		}
 
-        rect.anchorMin = new Vector2(0.02f, 0.9f);
-        rect.anchorMax = new Vector2(0.2f, 1.0f);
+        rect.anchorMin = new Vector2(0.02f, 0.6f);
+        rect.anchorMax = new Vector2(0.2f, 0.7f);
         rect.offsetMin = rect.offsetMax = Vector2.zero;
         rect.anchoredPosition = Vector2.zero;
         rect.sizeDelta = Vector2.zero;
@@ -39,7 +39,18 @@ public class OSDSpeed : OSDElement {
 
     public override void Update() {
         if (rb != null) {
-            text.text = "SPD  " + Mathf.Round(rb.velocity.magnitude * 3.6f).ToString() + "km/h";
+            float t = Time.timeSinceLevelLoad;
+            int min = (int)Mathf.Floor(t / 60.0f);
+            int sec = (int)Mathf.Floor(t - min * 60.0f);
+            string minStr = min.ToString();
+            string secStr = sec.ToString();
+            while (minStr.Length < 2) {
+                minStr = "0" + minStr;
+            }
+            while (secStr.Length < 2) {
+                secStr = "0" + secStr;
+            }
+            text.text = "TME  " + minStr + ":" + secStr;
         }
     }
 }

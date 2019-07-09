@@ -39,6 +39,34 @@ public class OSDManager : MonoBehaviour {
                     elements.Add(new OSDSpeed());
                     elements.Last().Build(osdSprites, osdFont);
                     break;
+                case "altitude":
+                    elements.Add(new OSDAltitude());
+                    elements.Last().Build(osdSprites, osdFont);
+                    break;
+                case "timer":
+                    elements.Add(new OSDTimer());
+                    elements.Last().Build(osdSprites, osdFont);
+                    break;
+                case "distance":
+                    elements.Add(new OSDDistance());
+                    elements.Last().Build(osdSprites, osdFont);
+                    break;
+                case "voltage":
+                    elements.Add(new OSDVoltage());
+                    elements.Last().Build(osdSprites, osdFont);
+                    break;
+                case "current":
+                    elements.Add(new OSDCurrent());
+                    elements.Last().Build(osdSprites, osdFont);
+                    break;
+                case "power":
+                    elements.Add(new OSDPower());
+                    elements.Last().Build(osdSprites, osdFont);
+                    break;
+                case "capacity":
+                    elements.Add(new OSDCapacity());
+                    elements.Last().Build(osdSprites, osdFont);
+                    break;
             }
         }
     }

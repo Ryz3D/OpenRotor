@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OSDSpeed : OSDElement {
+public class OSDAltitude : OSDElement {
+    private Transform tf;
+
     private RectTransform rect;
     private Text text;
     private Rigidbody rb;
@@ -13,7 +15,7 @@ public class OSDSpeed : OSDElement {
         text = gameObject.AddComponent<Text>();
         GameObject[] copters = GameObject.FindGameObjectsWithTag("copter");
         if (copters.Length > 0) {
-            rb = copters[0].GetComponent<Rigidbody>();
+            tf = copters[0].transform;
         }
         GameObject go = GameObject.Find("dataManager");
 		if (go == null) {
@@ -24,8 +26,8 @@ public class OSDSpeed : OSDElement {
 			config.Reload();
 		}
 
-        rect.anchorMin = new Vector2(0.02f, 0.9f);
-        rect.anchorMax = new Vector2(0.2f, 1.0f);
+        rect.anchorMin = new Vector2(0.02f, 0.8f);
+        rect.anchorMax = new Vector2(0.2f, 0.9f);
         rect.offsetMin = rect.offsetMax = Vector2.zero;
         rect.anchoredPosition = Vector2.zero;
         rect.sizeDelta = Vector2.zero;
@@ -38,8 +40,8 @@ public class OSDSpeed : OSDElement {
     }
 
     public override void Update() {
-        if (rb != null) {
-            text.text = "SPD  " + Mathf.Round(rb.velocity.magnitude * 3.6f).ToString() + "km/h";
+        if (tf != null) {
+            text.text = "ALT  " + (Mathf.Round(tf.position.y * 10.0f) / 10.0f).ToString() + "m";
         }
     }
 }

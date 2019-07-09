@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using UnityEngine;
 
 public class Quad : MonoBehaviour {
+	public float idleThrottle;
 	public float prRate;
 	public float prExpo;
 	public float yRate;
@@ -19,12 +20,18 @@ public class Quad : MonoBehaviour {
 	public ForceMode torqueMode;
 
 	private Rigidbody rb;
+	private Lipo lipo;
+	//private Powertrain powertrain;
 	private ConfigDataManager config;
 	private Vector3 startPos;
 	private Quaternion startRot;
 
 	void Start() {
 		rb = GetComponent<Rigidbody>();
+		lipo = GetComponent<Lipo>();
+		if (lipo == null) {
+			lipo = GetComponentInChildren<Lipo>();
+		}
 		GameObject go = GameObject.Find("dataManager");
 		if (go == null) {
 			Debug.LogError("FATAL: dataManager object not found!");
@@ -44,6 +51,10 @@ public class Quad : MonoBehaviour {
 			transform.rotation = startRot;
 			rb.velocity = Vector3.zero;
 			rb.angularVelocity = Vector3.zero;
+
+			if (lipo != null) {
+				lipo.ChargeTo(4.2f);
+			}
 		}
 
 		float throttle = config.input.GetAxisThrottle();
@@ -51,13 +62,30 @@ public class Quad : MonoBehaviour {
 		float pitch = config.input.GetAxisPitch();
 		float roll = config.input.GetAxisRoll();
 
-		//throttle = throttle * 0.5f + 0.5f;
+		throttle += idleThrottle;
 		yaw = ApplyExpo(yaw, yExpo) * yRate;
 		pitch = ApplyExpo(pitch, prExpo) * prRate;
 		roll = ApplyExpo(roll, prExpo) * prRate;
 
-		Vector3 force = Vector3.up * throttle * thrust;
-		Vector3 torque = new Vector3(pitch, yaw, -roll);
+		Vector3 force = Vector3.zero;
+		Vector3 torque = Vector3.zero;
+		if (lipo == null) {
+			force = Vector3.up * throttle * thrust;
+			torque = new Vector3(pitch, yaw, -roll);
+		}
+		else {
+			float thrCurrent = Mathf.Abs(throttle * thrust * 4); // powertrain eval
+			float rotCurrent = new Vector3(pitch, yaw, -roll).magnitude * 20; // powertrain eval
+			lipo.expectedCurrent = thrCurrent + rotCurrent;
+			if (lipo.expectedCurrent > 0) {
+				float thrFraction = thrCurrent / lipo.expectedCurrent;
+				float rotFraction = rotCurrent / lipo.expectedCurrent;
+				float power = lipo.actualCurrent * lipo.totalVoltage;
+
+				force = 0.017f * Vector3.up * power * thrFraction; // powertrain eval
+				torque = 0.01f * new Vector3(pitch, yaw, -roll) * power * rotFraction; // powertrain eval
+			}
+		}
 
 		float aoaSine = Vector3.Dot(transform.forward, rb.velocity.normalized);
 		float drag = Mathf.Lerp(areaFront, areaTop, Mathf.Abs(aoaSine)) * rb.velocity.sqrMagnitude * Cd;
