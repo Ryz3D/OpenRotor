@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 public class OSDManager : MonoBehaviour {
+    public Font osdFont;
     public List<Sprite> osdSprites;
 
     public List<OSDElement> elements = new List<OSDElement>();
@@ -32,7 +33,11 @@ public class OSDManager : MonoBehaviour {
             switch (s) {
                 case "input":
                     elements.Add(new OSDInput());
-                    elements.Last().Build(osdSprites);
+                    elements.Last().Build(osdSprites, osdFont);
+                    break;
+                case "speed":
+                    elements.Add(new OSDSpeed());
+                    elements.Last().Build(osdSprites, osdFont);
                     break;
             }
         }

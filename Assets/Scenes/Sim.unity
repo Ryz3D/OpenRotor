@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputConfigOverride: C:\Users\mirco.heitmann\AppData\LocalLow\Ryz\OpenRotor\input\xbox.xml
-  osdConfigOverride: 
+  osdConfigOverride: input,speed,
   osdElements: []
   uiRebuild: 0
 --- !u!114 &126788869
@@ -245,6 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae6008ca5fd9cb4498b2be7ae97b0a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  osdFont: {fileID: 12800000, guid: 8b82d9270d4c60c409bec3f6086313cc, type: 3}
   osdSprites:
   - {fileID: 21300000, guid: d99e4efaa15e3f6468e8e0a18fecc0a9, type: 3}
   - {fileID: 21300000, guid: 2e1fc25d4175ed54eb20ecd74941bbdd, type: 3}
@@ -289,15 +290,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_LocalScale.x
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_LocalScale.y
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_LocalScale.z
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_Enabled
@@ -962,7 +963,7 @@ GameObject:
   - component: {fileID: 1104842938}
   m_Layer: 0
   m_Name: whoop
-  m_TagString: Untagged
+  m_TagString: copter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1206,7 +1207,7 @@ GameObject:
   - component: {fileID: 1289625324}
   m_Layer: 0
   m_Name: kwad
-  m_TagString: Untagged
+  m_TagString: copter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1218,7 +1219,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1289625319}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 12.34, z: -17.84}
+  m_LocalPosition: {x: 0, y: 21.13, z: -38.94}
   m_LocalScale: {x: 0.4, y: 0.1, z: 0.4}
   m_Children:
   - {fileID: 534669905}
@@ -1294,12 +1295,12 @@ MonoBehaviour:
   prExpo: 0.7
   yRate: 1.2
   yExpo: 0.4
-  thrust: 35
-  Cd: 1
+  thrust: 50
+  Cd: 0.3
   areaTop: 0.0064
   areaFront: 0.0025
   defaultRotDrag: 6
-  idleRotDrag: 11
+  idleRotDrag: 12
   forceMode: 0
   torqueMode: 0
 --- !u!54 &1289625325
