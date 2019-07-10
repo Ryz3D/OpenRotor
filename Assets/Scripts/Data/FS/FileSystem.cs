@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public enum FSStatus {
     Unknown,
@@ -25,6 +26,8 @@ public abstract class FileSystem {
     public abstract byte[] ReadB(string path);
     public abstract void Write(string path, string data);
     public abstract void WriteB(string path, byte[] data);
+    public abstract List<string> ListFiles(string path);
+    public abstract List<string> ListDir(string path);
     public abstract void MakeDir(string path);
 
     protected void CheckStatus() {

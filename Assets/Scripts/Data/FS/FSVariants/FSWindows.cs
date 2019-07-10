@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 public class FSWindows : FileSystem
 {
@@ -86,5 +88,25 @@ public class FSWindows : FileSystem
 
         File.WriteAllBytes(path, data);
         status = FSStatus.Success;
+    }
+
+    public override List<string> ListFiles(string path) {
+        if (WhatIs(path) == FileType.Directory) {
+            return Directory.GetFiles(path).ToList();
+        }
+        else {
+            status = FSStatus.Nonexistent;
+            return new List<string>();
+        }
+    }
+
+    public override List<string> ListDir(string path) {
+        if (WhatIs(path) == FileType.Directory) {
+            return Directory.GetDirectories(path).ToList();
+        }
+        else {
+            status = FSStatus.Nonexistent;
+            return new List<string>();
+        }
     }
 }
