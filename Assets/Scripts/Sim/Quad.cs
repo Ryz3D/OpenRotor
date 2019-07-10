@@ -15,6 +15,8 @@ public class Quad : MonoBehaviour {
 	public float areaFront;
 	public float defaultRotDrag;
 	public float idleRotDrag;
+	public float propwashFactor;
+	public float hoverPropwash;
 
 	public ForceMode forceMode;
 	public ForceMode torqueMode;
@@ -23,8 +25,10 @@ public class Quad : MonoBehaviour {
 	private Lipo lipo;
 	//private Powertrain powertrain;
 	private ConfigDataManager config;
+	private Transform quadMesh;
 	private Vector3 startPos;
 	private Quaternion startRot;
+	private Vector2 propwashTorque;
 
 	void Start() {
 		rb = GetComponent<Rigidbody>();
@@ -41,6 +45,7 @@ public class Quad : MonoBehaviour {
 			config.Reload();
 		}
 
+		quadMesh = transform.GetChild(0);
 		startPos = transform.position;
 		startRot = transform.rotation;
 	}
@@ -88,6 +93,19 @@ public class Quad : MonoBehaviour {
 		}
 
 		float aoaSine = Vector3.Dot(transform.forward, rb.velocity.normalized);
+		Vector2 forw2d = new Vector2(transform.forward.x, transform.forward.z);
+		Vector2 vel2d = new Vector2(rb.velocity.x, rb.velocity.z);
+		float propwash = force.magnitude * propwashFactor * (1 - Vector2.Dot(forw2d.normalized, vel2d.normalized)) / (0.1f * vel2d.magnitude + 1.5f);
+		if (vel2d.magnitude < 2.0f) {
+			// fixes too much propwash while hovering
+			propwash *= vel2d.magnitude + hoverPropwash;
+		}
+		quadMesh.localEulerAngles = new Vector3(
+			Random.Range(-1.0f, 1.0f),
+			Random.Range(-1.0f, 1.0f),
+			Random.Range(-1.0f, 1.0f)
+		) * propwash;
+
 		float drag = Mathf.Lerp(areaFront, areaTop, Mathf.Abs(aoaSine)) * rb.velocity.sqrMagnitude * Cd;
 		rb.drag = drag;
 		if (torque.magnitude > 1.0f) {
