@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class InputListBuilder : MonoBehaviour {
     public float normalMargin = 0.0f;
     public float hoverMargin = 0.1f;
+    public float yOffset = 0.2f;
     public float height = 30;
     public Sprite btnSprite;
     public Font font;
@@ -21,6 +22,12 @@ public class InputListBuilder : MonoBehaviour {
                 string file = p.Split('\\').Last();
                 inputNames.Add(file.Substring(0, file.Length - 4));
             }
+        }
+
+        RectTransform parentRect = transform.parent.GetComponent<RectTransform>();
+        parentRect.sizeDelta = new Vector2(parentRect.sizeDelta.x, height * inputNames.Count);
+        for (int i = 0; i < transform.childCount; i++) {
+            Destroy(transform.GetChild(i).gameObject);
         }
 
         for (int i = 0; i < inputNames.Count; i++) {
@@ -39,8 +46,8 @@ public class InputListBuilder : MonoBehaviour {
             RectTransform rectText = goText.AddComponent<RectTransform>();
             Text text = goText.AddComponent<Text>();
 
-            rect.anchorMin = new Vector2(normalMargin, 1.0f);
-            rect.anchorMax = new Vector2(1.0f - normalMargin, 1.0f);
+            rect.anchorMin = new Vector2(normalMargin, 1.0f - yOffset);
+            rect.anchorMax = new Vector2(1.0f - normalMargin, 1.0f - yOffset);
             rect.sizeDelta = new Vector2(0.0f, height);
             rect.anchoredPosition = new Vector2(0.0f, -i * height);
             img.sprite = btnSprite;
@@ -53,10 +60,10 @@ public class InputListBuilder : MonoBehaviour {
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Sim");
             });
             btnExtend.speed = 10;
-            btnExtend.retractedMin = new Vector2(normalMargin, 1.0f);
-            btnExtend.retractedMax = new Vector2(1.0f - normalMargin, 1.0f);
-            btnExtend.extendedMin = new Vector2(hoverMargin, 1.0f);
-            btnExtend.extendedMax = new Vector2(1.0f - hoverMargin, 1.0f);
+            btnExtend.retractedMin = new Vector2(normalMargin, 1.0f - yOffset);
+            btnExtend.retractedMax = new Vector2(1.0f - normalMargin, 1.0f - yOffset);
+            btnExtend.extendedMin = new Vector2(hoverMargin, 1.0f - yOffset);
+            btnExtend.extendedMax = new Vector2(1.0f - hoverMargin, 1.0f - yOffset);
             EventTrigger.Entry onEnter = new EventTrigger.Entry();
             onEnter.eventID = EventTriggerType.PointerEnter;
             onEnter.callback.AddListener((eventData) => btnExtend.OnFocus());

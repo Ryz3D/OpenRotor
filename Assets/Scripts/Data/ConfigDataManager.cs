@@ -89,5 +89,10 @@ class ConfigDataManager : MonoBehaviour {
             osdElements.ForEach((string s) => str += s + ",");
             PlayerPrefs.SetString("osdConfig", str);
         }
+
+        if (!PlayerPrefs.HasKey("focalLength")) {
+            PlayerPrefs.SetFloat("focalLength", 2.1f);
+        }
+        Camera.main.focalLength = PlayerPrefs.GetFloat("focalLength");
     }
 }

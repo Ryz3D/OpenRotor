@@ -13,13 +13,8 @@ public class Quad : MonoBehaviour {
 	public float Cd;
 	public float areaTop;
 	public float areaFront;
-	public float defaultRotDrag;
-	public float idleRotDrag;
+	public float rotDrag;
 	public float propwashFactor;
-	public float hoverPropwash;
-
-	public ForceMode forceMode;
-	public ForceMode torqueMode;
 
 	private Rigidbody rb;
 	private Lipo lipo;
@@ -50,6 +45,30 @@ public class Quad : MonoBehaviour {
 		startRot = transform.rotation;
 	}
 
+	float ApplyRates(float input, float rc, float expo, float super) {
+		// from https://github.com/cleanflight/cleanflight/blob/83ed5df868e428ee530059565b47a8146c7a4484/src/main/fc/fc_rc.c#L117
+
+		float rcRateIncremental = 14.54f;
+		if (expo > 0.0f) {
+			float expof = expo / 100.0f;
+			input = input * Mathf.Pow(Mathf.Abs(input), 3) * expof + input * (1 - expof);
+		}
+
+		float rcRate = rc / 100.0f;
+		if (rcRate > 2.0f) {
+			rcRate += rcRateIncremental * (rcRate - 2.0f);
+		}
+		float angleRate = 200.0f * rcRate * input;
+		if (super > 0.0f) {
+			float rcSuperfactor = 1.0f / (Mathf.Clamp(1.0f - (Mathf.Abs(input) * (super / 100.0f)), 0.01f, 1.00f));
+			angleRate *= rcSuperfactor;
+		}
+
+		Debug.Log(angleRate);
+
+		return angleRate;
+	}
+
 	void FixedUpdate() {
 		if (config.input.GetBtnReset()) {
 			transform.position = startPos;
@@ -66,6 +85,8 @@ public class Quad : MonoBehaviour {
 		float yaw = config.input.GetAxisYaw();
 		float pitch = config.input.GetAxisPitch();
 		float roll = config.input.GetAxisRoll();
+
+		Debug.Log(ApplyRates(roll, 1.0f, 0.0f, 0.0f));
 
 		throttle += idleThrottle;
 		yaw = ApplyExpo(yaw, yExpo) * yRate;
@@ -98,7 +119,7 @@ public class Quad : MonoBehaviour {
 		float propwash = force.magnitude * propwashFactor * (1 - Vector2.Dot(forw2d.normalized, vel2d.normalized)) / (0.1f * vel2d.magnitude + 1.5f);
 		if (vel2d.magnitude < 2.0f) {
 			// fixes too much propwash while hovering
-			propwash *= vel2d.magnitude + hoverPropwash;
+			propwash *= vel2d.magnitude + 0.05f;
 		}
 		quadMesh.localEulerAngles = new Vector3(
 			Random.Range(-1.0f, 1.0f),
@@ -108,18 +129,15 @@ public class Quad : MonoBehaviour {
 
 		float drag = Mathf.Lerp(areaFront, areaTop, Mathf.Abs(aoaSine)) * rb.velocity.sqrMagnitude * Cd;
 		rb.drag = drag;
-		if (torque.magnitude > 1.0f) {
-			rb.angularDrag = defaultRotDrag / torque.sqrMagnitude;
-		}
-		else if (torque.magnitude < 0.1f) {
-			rb.angularDrag = idleRotDrag;
+		if (torque.magnitude < 0.1f) {
+			rb.angularDrag = rotDrag;
 		}
 		else {
-			rb.angularDrag = defaultRotDrag;
+			rb.angularDrag = rotDrag / 2.0f / Mathf.Max(1.0f, torque.magnitude);
 		}
 
-		rb.AddRelativeForce(force, forceMode);
-		rb.AddRelativeTorque(torque, torqueMode);
+		rb.AddRelativeForce(force);
+		rb.AddRelativeTorque(torque);
 	}
 
 	private float ApplyExpo(float v, float e) {
