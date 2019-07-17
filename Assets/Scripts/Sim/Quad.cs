@@ -118,7 +118,6 @@ public class Quad : MonoBehaviour, Serializable {
 			}
 		}
 
-		float aoaSine = Vector3.Dot(transform.forward, rb.velocity.normalized);
 		Vector2 forw2d = new Vector2(transform.forward.x, transform.forward.z);
 		Vector2 vel2d = new Vector2(rb.velocity.x, rb.velocity.z);
 		float propwash = force.magnitude * propwashFactor * (1 - Vector2.Dot(forw2d.normalized, vel2d.normalized)) / (0.1f * vel2d.magnitude + 1.5f);
@@ -132,6 +131,7 @@ public class Quad : MonoBehaviour, Serializable {
 			UnityEngine.Random.Range(-1.0f, 1.0f)
 		) * propwash;
 
+		float aoaSine = Vector3.Dot(transform.forward, rb.velocity.normalized);
 		float drag = Mathf.Lerp(areaFront, areaTop, Mathf.Abs(aoaSine)) * rb.velocity.sqrMagnitude * Cd;
 		rb.drag = drag;
 		if (torque.magnitude < 0.1f) {
