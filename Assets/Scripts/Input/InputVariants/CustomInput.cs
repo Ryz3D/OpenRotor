@@ -3,7 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 
-class CustomInput : RCInput, Serializable {
+public class CustomInput : RCInput, Serializable {
     public CustomInputAxis[] axis;
     /*
     0: Throttle

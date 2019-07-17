@@ -1,6 +1,6 @@
 using UnityEngine;
 
-abstract class RCInput {
+public abstract class RCInput {
     public abstract float GetAxisThrottle();
     public abstract float GetAxisYaw();
     public abstract float GetAxisPitch();

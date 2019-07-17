@@ -8,8 +8,6 @@ public class OSDDistance : OSDElement {
     private Text text;
     private Transform tf;
 
-    private ConfigDataManager config;
-
     protected override void Start() {
         rect = gameObject.GetComponent<RectTransform>();
         text = gameObject.AddComponent<Text>();
@@ -17,14 +15,6 @@ public class OSDDistance : OSDElement {
         if (copters.Length > 0) {
             tf = copters[0].transform;
         }
-        GameObject go = GameObject.Find("dataManager");
-		if (go == null) {
-			Debug.LogError("FATAL: dataManager object not found!");
-		}
-		else {
-			config = go.GetComponent<ConfigDataManager>();
-			config.Reload();
-		}
 
         startPos = tf.position;
         rect.anchorMin = new Vector2(0.02f, 0.7f);

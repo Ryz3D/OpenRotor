@@ -4,19 +4,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class UIInput : MonoBehaviour {
-	private ConfigDataManager config;
 	private StandaloneInputModule input;
 
 	void Start() {
 		input = GetComponent<StandaloneInputModule>();
-		GameObject go = GameObject.Find("dataManager");
-		if (go == null) {
-			Debug.LogError("FATAL: dataManager object not found!");
-		}
-		else {
-			config = go.GetComponent<ConfigDataManager>();
-			config.Reload();
-		}
 	}
     /*
     0: Throttle
@@ -32,10 +23,10 @@ public class UIInput : MonoBehaviour {
     */
 
 	void Update() {
-		CustomInputAxis cancel = ((CustomInput)config.input).axis[6];
-		CustomInputAxis submit = ((CustomInput)config.input).axis[7];
-		CustomInputAxis horizontal = ((CustomInput)config.input).axis[1];
-		CustomInputAxis vertical = ((CustomInput)config.input).axis[2];
+		CustomInputAxis cancel = ((CustomInput)StaticDataAccess.config.input).axis[6];
+		CustomInputAxis submit = ((CustomInput)StaticDataAccess.config.input).axis[7];
+		CustomInputAxis horizontal = ((CustomInput)StaticDataAccess.config.input).axis[1];
+		CustomInputAxis vertical = ((CustomInput)StaticDataAccess.config.input).axis[2];
 
 		string cancelStr = "empty";
 		string submitStr = "empty";

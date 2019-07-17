@@ -8,19 +8,10 @@ public class OSDManager : MonoBehaviour {
 
     public List<OSDElement> elements = new List<OSDElement>();
 
-    private ConfigDataManager config;
     private int resXCache;
     private int resYCache;
 
     void Start() {
-        GameObject go = GameObject.Find("dataManager");
-		if (go == null) {
-			Debug.LogError("FATAL: dataManager object not found!");
-		}
-		else {
-			config = go.GetComponent<ConfigDataManager>();
-			config.Reload();
-		}
     }
 
     void Rebuild() {
@@ -29,7 +20,7 @@ public class OSDManager : MonoBehaviour {
         }
 
         elements.Clear();
-        foreach (string s in config.osdElements) {
+        foreach (string s in StaticDataAccess.config.osdElements) {
             switch (s) {
                 case "input":
                     elements.Add(new OSDInput());
@@ -72,9 +63,9 @@ public class OSDManager : MonoBehaviour {
     }
 
     void Update() {
-        if (config.uiRebuild || Screen.width != resXCache || Screen.height != resYCache) {
+        if (StaticDataAccess.config.uiRebuild || Screen.width != resXCache || Screen.height != resYCache) {
             Rebuild();
-            config.uiRebuild = false;
+            StaticDataAccess.config.uiRebuild = false;
             resXCache = Screen.width;
             resYCache = Screen.height;
         }

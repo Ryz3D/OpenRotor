@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using UnityEngine;
 
-public class Quad : MonoBehaviour {
+public class Quad : MonoBehaviour, Serializable {
 	public float idleThrottle;
 	public float prRate;
 	public float prExpo;
@@ -19,7 +20,6 @@ public class Quad : MonoBehaviour {
 	private Rigidbody rb;
 	private Lipo lipo;
 	//private Powertrain powertrain;
-	private ConfigDataManager config;
 	private Transform quadMesh;
 	private Vector3 startPos;
 	private Quaternion startRot;
@@ -30,14 +30,6 @@ public class Quad : MonoBehaviour {
 		lipo = GetComponent<Lipo>();
 		if (lipo == null) {
 			lipo = GetComponentInChildren<Lipo>();
-		}
-		GameObject go = GameObject.Find("dataManager");
-		if (go == null) {
-			Debug.LogError("FATAL: dataManager object not found!");
-		}
-		else {
-			config = go.GetComponent<ConfigDataManager>();
-			config.Reload();
 		}
 
 		quadMesh = transform.GetChild(0);
@@ -70,7 +62,7 @@ public class Quad : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		if (config.input.GetBtnReset()) {
+		if (StaticDataAccess.config.input.GetBtnReset()) {
 			transform.position = startPos;
 			transform.rotation = startRot;
 			rb.velocity = Vector3.zero;
@@ -81,12 +73,12 @@ public class Quad : MonoBehaviour {
 			}
 		}
 
-		float throttle = config.input.GetAxisThrottle();
-		float yaw = config.input.GetAxisYaw();
-		float pitch = config.input.GetAxisPitch();
-		float roll = config.input.GetAxisRoll();
+		float throttle = StaticDataAccess.config.input.GetAxisThrottle();
+		float yaw = StaticDataAccess.config.input.GetAxisYaw();
+		float pitch = StaticDataAccess.config.input.GetAxisPitch();
+		float roll = StaticDataAccess.config.input.GetAxisRoll();
 
-		Debug.Log(ApplyRates(roll, 1.0f, 0.0f, 0.0f));
+		//Debug.Log(ApplyRates(roll, 1.0f, 0.0f, 0.0f));
 
 		throttle += idleThrottle;
 		yaw = ApplyExpo(yaw, yExpo) * yRate;
@@ -122,9 +114,9 @@ public class Quad : MonoBehaviour {
 			propwash *= vel2d.magnitude + 0.05f;
 		}
 		quadMesh.localEulerAngles = new Vector3(
-			Random.Range(-1.0f, 1.0f),
-			Random.Range(-1.0f, 1.0f),
-			Random.Range(-1.0f, 1.0f)
+            UnityEngine.Random.Range(-1.0f, 1.0f),
+			UnityEngine.Random.Range(-1.0f, 1.0f),
+			UnityEngine.Random.Range(-1.0f, 1.0f)
 		) * propwash;
 
 		float drag = Mathf.Lerp(areaFront, areaTop, Mathf.Abs(aoaSine)) * rb.velocity.sqrMagnitude * Cd;
@@ -143,4 +135,64 @@ public class Quad : MonoBehaviour {
 	private float ApplyExpo(float v, float e) {
 		return Mathf.Pow(v, 3) * e + v - v * e;
 	}
+
+	private float ReadValue(XElement xml, string name) {
+        XElement value = xml.Element(name);
+        if (value == null) {
+            Debug.LogError("couldn't find '" + name + "' in quad config");
+            return 0.0f;
+        }
+        else {
+            try {
+                return float.Parse(value.Attribute("value").Value);
+            }
+            catch (FormatException) {
+                Debug.LogError("couldn't parse '" + name + "' in quad config");
+                return 0.0f;
+            }
+        }
+    }
+
+    public void Deserialize(XElement xml) {
+        idleThrottle = ReadValue(xml, "idleThrottle");
+        prRate = ReadValue(xml, "prRate");
+        prExpo = ReadValue(xml, "prExpo");
+        yRate = ReadValue(xml, "yRate");
+        yExpo = ReadValue(xml, "yExpo");
+        thrust = ReadValue(xml, "thrust");
+        Cd = ReadValue(xml, "Cd");
+        areaTop = ReadValue(xml, "areaTop");
+        areaFront = ReadValue(xml, "areaFront");
+        rotDrag = ReadValue(xml, "rotDrag");
+        propwashFactor = ReadValue(xml, "propwashFactor");
+    }
+
+    private XElement WriteValue(string name, float value) {
+        return new XElement(
+            name,
+            new XAttribute(
+                "value", value.ToString()
+            )
+        );
+    }
+
+    public XElement Serialize() {
+        List<XElement> children = new List<XElement>();
+        // bloody hell clean this up
+        // look into marshaling or something
+        return new XElement(
+            "quad",
+            WriteValue("idleThrottle", idleThrottle),
+            WriteValue("prRate", prRate),
+            WriteValue("prExpo", prExpo),
+            WriteValue("yRate", yRate),
+            WriteValue("yExpo", yExpo),
+            WriteValue("thrust", thrust),
+            WriteValue("Cd", Cd),
+            WriteValue("areaTop", areaTop),
+            WriteValue("areaFront", areaFront),
+            WriteValue("rotDrag", rotDrag),
+            WriteValue("propwashFactor", propwashFactor)
+        );
+    }
 }

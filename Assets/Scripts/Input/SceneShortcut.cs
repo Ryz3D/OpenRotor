@@ -1,0 +1,27 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SceneShortcut : MonoBehaviour {
+	public KeyCode key;
+	public string scene;
+	public LoadSceneMode mode;
+	public int maxScenes;
+
+	void Update() {
+		if (Input.GetKeyDown(key)) {
+			if (mode == LoadSceneMode.Additive) {
+				for (int i = 0; i < SceneManager.sceneCount; i++) {
+					if (SceneManager.GetSceneAt(i).name == scene) {
+						return;
+					}
+				}
+			}
+
+			if (mode != LoadSceneMode.Additive || maxScenes == 0 || SceneManager.sceneCount < maxScenes) {
+				SceneManager.LoadScene(scene, mode);
+			}
+		}
+	}
+}

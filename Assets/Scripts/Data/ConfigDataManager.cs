@@ -3,7 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 
-class ConfigDataManager : MonoBehaviour {
+public class ConfigDataManager : MonoBehaviour {
     public string inputConfigOverride;
     public string osdConfigOverride;
 
@@ -26,6 +26,7 @@ class ConfigDataManager : MonoBehaviour {
     public bool uiRebuild;
 
     void Awake() {
+        StaticDataAccess.config = this;
         Reload();
     }
 

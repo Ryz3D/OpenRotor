@@ -8,8 +8,6 @@ public class OSDAltitude : OSDElement {
     private Text text;
     private Rigidbody rb;
 
-    private ConfigDataManager config;
-
     protected override void Start() {
         rect = gameObject.GetComponent<RectTransform>();
         text = gameObject.AddComponent<Text>();
@@ -17,14 +15,6 @@ public class OSDAltitude : OSDElement {
         if (copters.Length > 0) {
             tf = copters[0].transform;
         }
-        GameObject go = GameObject.Find("dataManager");
-		if (go == null) {
-			Debug.LogError("FATAL: dataManager object not found!");
-		}
-		else {
-			config = go.GetComponent<ConfigDataManager>();
-			config.Reload();
-		}
 
         rect.anchorMin = new Vector2(0.02f, 0.8f);
         rect.anchorMax = new Vector2(0.2f, 0.9f);

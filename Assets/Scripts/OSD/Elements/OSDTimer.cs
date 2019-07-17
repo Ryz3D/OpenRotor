@@ -6,8 +6,6 @@ public class OSDTimer : OSDElement {
     private Text text;
     private Rigidbody rb;
 
-    private ConfigDataManager config;
-
     protected override void Start() {
         rect = gameObject.GetComponent<RectTransform>();
         text = gameObject.AddComponent<Text>();
@@ -15,14 +13,6 @@ public class OSDTimer : OSDElement {
         if (copters.Length > 0) {
             rb = copters[0].GetComponent<Rigidbody>();
         }
-        GameObject go = GameObject.Find("dataManager");
-		if (go == null) {
-			Debug.LogError("FATAL: dataManager object not found!");
-		}
-		else {
-			config = go.GetComponent<ConfigDataManager>();
-			config.Reload();
-		}
 
         rect.anchorMin = new Vector2(0.02f, 0.6f);
         rect.anchorMax = new Vector2(0.2f, 0.7f);

@@ -12,12 +12,10 @@ public class InputListBuilder : MonoBehaviour {
     public Sprite btnSprite;
     public Font font;
 
-    private ConfigDataManager config;
-
     public void Rebuild() {
         List<string> paths = new List<string>();
         List<string> inputNames = new List<string>();
-        foreach (string p in config.fs.ListFiles(ConfigManager.basePath + "level")) {
+        foreach (string p in StaticDataAccess.config.fs.ListFiles(ConfigManager.basePath + "input")) {
             if (p.EndsWith(".xml")) {
                 paths.Add(p);
                 string file = p.Split('\\').Last();
@@ -25,8 +23,8 @@ public class InputListBuilder : MonoBehaviour {
             }
         }
 
-        RectTransform parentRect = transform.parent.GetComponent<RectTransform>();
-        parentRect.sizeDelta = new Vector2(parentRect.sizeDelta.x, height * inputNames.Count);
+        RectTransform ownRect = GetComponent<RectTransform>();
+        ownRect.sizeDelta = new Vector2(ownRect.sizeDelta.x, height * inputNames.Count);
         for (int i = 0; i < transform.childCount; i++) {
             Destroy(transform.GetChild(i).gameObject);
         }
@@ -35,22 +33,29 @@ public class InputListBuilder : MonoBehaviour {
             // this will probably need some cleanup
 
             GameObject go = new GameObject("uiElement");
-            go.transform.parent = transform;
             RectTransform rect = go.AddComponent<RectTransform>();
             Image img = go.AddComponent<Image>();
             Button btn = go.AddComponent<Button>();
-            ButtonExtend btnExtend = go.AddComponent<ButtonExtend>();
             EventTrigger trigger = go.AddComponent<EventTrigger>();
+            ButtonExtend btnExtend = go.AddComponent<ButtonExtend>();
 
             GameObject goText = new GameObject("uiElement");
-            goText.transform.parent = go.transform;
             RectTransform rectText = goText.AddComponent<RectTransform>();
             Text text = goText.AddComponent<Text>();
+
+            go.transform.parent = transform;
+            goText.transform.parent = go.transform;
 
             rect.anchorMin = new Vector2(normalMargin, 1.0f - yOffset);
             rect.anchorMax = new Vector2(1.0f - normalMargin, 1.0f - yOffset);
             rect.sizeDelta = new Vector2(0.0f, height);
             rect.anchoredPosition = new Vector2(0.0f, -i * height);
+
+            rectText.anchorMin = new Vector2(0.0f, 0.0f);
+            rectText.anchorMax = new Vector2(1.0f, 1.0f);
+            rectText.sizeDelta = Vector2.zero;
+            rectText.anchoredPosition = Vector2.zero;
+
             img.sprite = btnSprite;
             img.type = Image.Type.Sliced;
             btn.onClick = new Button.ButtonClickedEvent();
@@ -60,11 +65,13 @@ public class InputListBuilder : MonoBehaviour {
                 PlayerPrefs.SetString("inputConfig", pathBuf);
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Sim");
             });
+
             btnExtend.speed = 10;
             btnExtend.retractedMin = new Vector2(normalMargin, 1.0f - yOffset);
             btnExtend.retractedMax = new Vector2(1.0f - normalMargin, 1.0f - yOffset);
             btnExtend.extendedMin = new Vector2(hoverMargin, 1.0f - yOffset);
             btnExtend.extendedMax = new Vector2(1.0f - hoverMargin, 1.0f - yOffset);
+
             EventTrigger.Entry onEnter = new EventTrigger.Entry();
             onEnter.eventID = EventTriggerType.PointerEnter;
             onEnter.callback.AddListener((eventData) => btnExtend.OnFocus());
@@ -74,10 +81,6 @@ public class InputListBuilder : MonoBehaviour {
             onExit.callback.AddListener((eventData) => btnExtend.OnFocusLost());
             trigger.triggers.Add(onExit);
 
-            rectText.anchorMin = new Vector2(0.0f, 0.0f);
-            rectText.anchorMax = new Vector2(1.0f, 1.0f);
-            rectText.sizeDelta = Vector2.zero;
-            rectText.anchoredPosition = Vector2.zero;
             text.font = font;
             text.color = Color.black;
             text.alignment = TextAnchor.MiddleCenter;
@@ -86,14 +89,6 @@ public class InputListBuilder : MonoBehaviour {
     }
 
     void Start() {
-        GameObject go = GameObject.Find("dataManager");
-        if (go == null) {
-            Debug.LogError("FATAL: dataManager object not found!");
-        }
-        else {
-            config = go.GetComponent<ConfigDataManager>();
-            config.Reload();
-        }
         Rebuild();
     }
 

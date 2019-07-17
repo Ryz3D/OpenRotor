@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,48 +8,71 @@ using UnityEngine.UI;
 public class LevelListBuilder : MonoBehaviour {
     public float yOffset = 0.2f;
     public float height = 150;
+    public float margin = 10;
     public Sprite btnSprite;
     public Font font;
 
-    private ConfigDataManager config;
-
     public void Rebuild() {
         List<string> paths = new List<string>();
-        List<string> levelNames = new List<string>();
-        foreach (string p in config.fs.ListFiles(ConfigManager.basePath + "level")) {
+        List<Level> levels = new List<Level>();
+        foreach (string p in StaticDataAccess.config.fs.ListFiles(ConfigManager.basePath + "level")) {
             if (p.EndsWith(".xml")) {
                 paths.Add(p);
-                string file = p.Split('\\').Last();
-                levelNames.Add(file.Substring(0, file.Length - 4));
+
+                XDocument doc = XDocument.Parse(StaticDataAccess.config.fs.Read(p));
+                XElement elem = doc.Element("level");
+                if (elem == null) {
+                    Debug.LogError("level seems broken '" + p + "'");
+                }
+
+                levels.Add(new Level());
+                levels.Last().Deserialize(elem);
             }
         }
 
-        RectTransform parentRect = transform.parent.GetComponent<RectTransform>();
-        parentRect.sizeDelta = new Vector2(parentRect.sizeDelta.x, height * levelNames.Count);
+        RectTransform ownRect = GetComponent<RectTransform>();
+        ownRect.sizeDelta = new Vector2(ownRect.sizeDelta.x, (height + margin) * levels.Count);
         for (int i = 0; i < transform.childCount; i++) {
             Destroy(transform.GetChild(i).gameObject);
         }
 
-        for (int i = 0; i < levelNames.Count; i++) {
+        for (int i = 0; i < levels.Count; i++) {
             // this will probably need some cleanup
 
             GameObject go = new GameObject("uiElement");
-            go.transform.parent = transform;
             RectTransform rect = go.AddComponent<RectTransform>();
-            Image img = go.AddComponent<Image>();
+            Image bg = go.AddComponent<Image>();
             Button btn = go.AddComponent<Button>();
 
+            GameObject goImg = new GameObject("uiElement");
+            RectTransform rectImg = goImg.AddComponent<RectTransform>();
+            Image img = goImg.AddComponent<Image>();
+
             GameObject goText = new GameObject("uiElement");
-            goText.transform.parent = go.transform;
             RectTransform rectText = goText.AddComponent<RectTransform>();
             Text text = goText.AddComponent<Text>();
+
+            go.transform.parent = transform;
+            goImg.transform.parent = go.transform;
+            goText.transform.parent = go.transform;
 
             rect.anchorMin = new Vector2(0.0f, 1.0f - yOffset);
             rect.anchorMax = new Vector2(1.0f, 1.0f - yOffset);
             rect.sizeDelta = new Vector2(0.0f, height);
-            rect.anchoredPosition = new Vector2(0.0f, -i * height);
-            img.sprite = btnSprite;
-            img.type = Image.Type.Sliced;
+            rect.anchoredPosition = new Vector2(0.0f, -i * (height + margin));
+
+            rectImg.anchorMin = new Vector2(0.0f, 0.2f);
+            rectImg.anchorMax = new Vector2(1.0f, 1.0f);
+            rectImg.sizeDelta = Vector2.zero;
+            rectImg.anchoredPosition = Vector2.zero;
+
+            rectText.anchorMin = new Vector2(0.0f, 0.0f);
+            rectText.anchorMax = new Vector2(1.0f, 0.2f);
+            rectText.sizeDelta = Vector2.zero;
+            rectText.anchoredPosition = Vector2.zero;
+
+            bg.color = Color.white;
+            img.sprite = levels[i].preview;
             btn.onClick = new Button.ButtonClickedEvent();
             // i will be incremented at onClick call
             string pathBuf = paths[i];
@@ -57,26 +81,14 @@ public class LevelListBuilder : MonoBehaviour {
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Sim");
             });
 
-            rectText.anchorMin = new Vector2(0.0f, 0.0f);
-            rectText.anchorMax = new Vector2(1.0f, 1.0f);
-            rectText.sizeDelta = Vector2.zero;
-            rectText.anchoredPosition = Vector2.zero;
             text.font = font;
             text.color = Color.black;
             text.alignment = TextAnchor.MiddleCenter;
-            text.text = levelNames[i];
+            text.text = levels[i].name;
         }
     }
 
     void Start() {
-        GameObject go = GameObject.Find("dataManager");
-        if (go == null) {
-            Debug.LogError("FATAL: dataManager object not found!");
-        }
-        else {
-            config = go.GetComponent<ConfigDataManager>();
-            config.Reload();
-        }
         Rebuild();
     }
 

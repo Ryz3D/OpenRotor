@@ -14,8 +14,6 @@ public class OSDInput : OSDElement {
     private RectTransform rectLStick;
     private RectTransform rectRStick;
 
-    private ConfigDataManager config;
-
     protected override void Start() {
         rectRoot = gameObject.GetComponent<RectTransform>();
         left = new GameObject("osdInputLeft");
@@ -35,15 +33,6 @@ public class OSDInput : OSDElement {
         leftStick.AddComponent<Image>().sprite = sprites[0];
         rightStick.AddComponent<Image>().sprite = sprites[0];
 
-        GameObject go = GameObject.Find("dataManager");
-		if (go == null) {
-			Debug.LogError("FATAL: dataManager object not found!");
-		}
-		else {
-			config = go.GetComponent<ConfigDataManager>();
-			config.Reload();
-		}
-
         rectRoot.anchorMin = new Vector2(0.3f, 0.0f);
         rectRoot.anchorMax = new Vector2(0.7f, 0.2f);
         rectRoot.offsetMin = rectRoot.offsetMax = Vector2.zero;
@@ -62,10 +51,10 @@ public class OSDInput : OSDElement {
     }
 
     public override void Update() {
-        float y = config.input.GetAxisYaw() * 0.5f + 0.5f;
-        float t = config.input.GetAxisThrottle() * 0.5f + 0.5f;
-        float r = config.input.GetAxisRoll() * 0.5f + 0.5f;
-        float p = config.input.GetAxisPitch() * 0.5f + 0.5f;
+        float y = StaticDataAccess.config.input.GetAxisYaw() * 0.5f + 0.5f;
+        float t = StaticDataAccess.config.input.GetAxisThrottle() * 0.5f + 0.5f;
+        float r = StaticDataAccess.config.input.GetAxisRoll() * 0.5f + 0.5f;
+        float p = StaticDataAccess.config.input.GetAxisPitch() * 0.5f + 0.5f;
 
         rectLStick.anchorMin = new Vector2(y - stickSize, t - stickSize);
         rectLStick.anchorMax = new Vector2(y + stickSize, t + stickSize);

@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 120793497}
   - component: {fileID: 120793498}
+  - component: {fileID: 120793499}
   m_Layer: 0
   m_Name: shortcutManager
   m_TagString: Untagged
@@ -150,12 +151,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 120793496}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5338fdca04727f142862194cc89f2e88, type: 3}
+  m_Script: {fileID: 11500000, guid: 88566d89eeb202d4bb2b14f554df822b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   key: 105
   scene: InputSettings
-  mode: 0
+  mode: 1
+  maxScenes: 2
+--- !u!114 &120793499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 120793496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88566d89eeb202d4bb2b14f554df822b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 108
+  scene: LevelSelect
+  mode: 1
+  maxScenes: 2
 --- !u!1 &126788866
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +282,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_LocalScale.x
@@ -289,6 +306,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2300006, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -358,7 +379,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &315284631 stripped
 GameObject:
@@ -591,7 +612,7 @@ Transform:
   m_Children:
   - {fileID: 1752370001}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1289625321
 MonoBehaviour:
