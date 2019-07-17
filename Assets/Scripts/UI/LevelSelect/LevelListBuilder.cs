@@ -78,7 +78,18 @@ public class LevelListBuilder : MonoBehaviour {
             string pathBuf = paths[i];
             btn.onClick.AddListener(() => {
                 SceneParam.selectedLevel = pathBuf;
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Sim");
+                switch (SceneParam.selectType) {
+                    case LevelSelectType.Freestyle:
+                    case LevelSelectType.Race:
+                    case LevelSelectType.Custom:
+                    case LevelSelectType.Test:
+                        UnityEngine.SceneManagement.SceneManager.LoadScene("Sim");
+                        break;
+                    case LevelSelectType.Leaderboard: // TODO: ADD LEADERBOARD SCENE
+                    case LevelSelectType.Unknown:
+                        UnityEngine.SceneManagement.SceneManager.LoadScene("Start");
+                        break;
+                }
             });
 
             text.font = font;

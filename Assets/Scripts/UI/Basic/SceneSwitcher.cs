@@ -6,6 +6,10 @@ public class SceneSwitcher : MonoBehaviour {
         SceneManager.LoadScene(str, LoadSceneMode.Single);
     }
 
+    public void AddString(string str) {
+        SceneManager.LoadScene(str, LoadSceneMode.Additive);
+    }
+
     public void UnloadString(string str) {
         SceneManager.UnloadSceneAsync(str);
     }

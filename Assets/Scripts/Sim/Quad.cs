@@ -73,6 +73,19 @@ public class Quad : MonoBehaviour, Serializable {
 			}
 		}
 
+		if (StaticDataAccess.config.input.GetBtnFlip()) {
+			RaycastHit rayHit;
+			if (Physics.Raycast(transform.position, Vector3.down, out rayHit)) {
+				transform.position = rayHit.point + Vector3.up * 3.0f;
+			}
+			else {
+				transform.position += Vector3.up * 5.0f;
+			}
+			transform.rotation = Quaternion.identity;
+			rb.velocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
+		}
+
 		float throttle = StaticDataAccess.config.input.GetAxisThrottle();
 		float yaw = StaticDataAccess.config.input.GetAxisYaw();
 		float pitch = StaticDataAccess.config.input.GetAxisPitch();
