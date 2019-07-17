@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 126788867}
   - component: {fileID: 126788868}
   - component: {fileID: 126788869}
+  - component: {fileID: 126788870}
   m_Layer: 0
   m_Name: dataManager
   m_TagString: Untagged
@@ -216,6 +217,17 @@ MonoBehaviour:
   osdSprites:
   - {fileID: 21300000, guid: d99e4efaa15e3f6468e8e0a18fecc0a9, type: 3}
   - {fileID: 21300000, guid: 2e1fc25d4175ed54eb20ecd74941bbdd, type: 3}
+--- !u!114 &126788870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 126788866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b38da126061a3a4b89c4e2478298099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &169267402
 Prefab:
   m_ObjectHideFlags: 0

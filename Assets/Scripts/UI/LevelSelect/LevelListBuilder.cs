@@ -4,11 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InputListBuilder : MonoBehaviour {
-    public float normalMargin = 0.0f;
-    public float hoverMargin = 0.1f;
+public class LevelListBuilder : MonoBehaviour {
     public float yOffset = 0.2f;
-    public float height = 30;
+    public float height = 150;
     public Sprite btnSprite;
     public Font font;
 
@@ -16,22 +14,22 @@ public class InputListBuilder : MonoBehaviour {
 
     public void Rebuild() {
         List<string> paths = new List<string>();
-        List<string> inputNames = new List<string>();
+        List<string> levelNames = new List<string>();
         foreach (string p in config.fs.ListFiles(ConfigManager.basePath + "level")) {
             if (p.EndsWith(".xml")) {
                 paths.Add(p);
                 string file = p.Split('\\').Last();
-                inputNames.Add(file.Substring(0, file.Length - 4));
+                levelNames.Add(file.Substring(0, file.Length - 4));
             }
         }
 
         RectTransform parentRect = transform.parent.GetComponent<RectTransform>();
-        parentRect.sizeDelta = new Vector2(parentRect.sizeDelta.x, height * inputNames.Count);
+        parentRect.sizeDelta = new Vector2(parentRect.sizeDelta.x, height * levelNames.Count);
         for (int i = 0; i < transform.childCount; i++) {
             Destroy(transform.GetChild(i).gameObject);
         }
 
-        for (int i = 0; i < inputNames.Count; i++) {
+        for (int i = 0; i < levelNames.Count; i++) {
             // this will probably need some cleanup
 
             GameObject go = new GameObject("uiElement");
@@ -39,16 +37,14 @@ public class InputListBuilder : MonoBehaviour {
             RectTransform rect = go.AddComponent<RectTransform>();
             Image img = go.AddComponent<Image>();
             Button btn = go.AddComponent<Button>();
-            ButtonExtend btnExtend = go.AddComponent<ButtonExtend>();
-            EventTrigger trigger = go.AddComponent<EventTrigger>();
 
             GameObject goText = new GameObject("uiElement");
             goText.transform.parent = go.transform;
             RectTransform rectText = goText.AddComponent<RectTransform>();
             Text text = goText.AddComponent<Text>();
 
-            rect.anchorMin = new Vector2(normalMargin, 1.0f - yOffset);
-            rect.anchorMax = new Vector2(1.0f - normalMargin, 1.0f - yOffset);
+            rect.anchorMin = new Vector2(0.0f, 1.0f - yOffset);
+            rect.anchorMax = new Vector2(1.0f, 1.0f - yOffset);
             rect.sizeDelta = new Vector2(0.0f, height);
             rect.anchoredPosition = new Vector2(0.0f, -i * height);
             img.sprite = btnSprite;
@@ -57,22 +53,9 @@ public class InputListBuilder : MonoBehaviour {
             // i will be incremented at onClick call
             string pathBuf = paths[i];
             btn.onClick.AddListener(() => {
-                PlayerPrefs.SetString("inputConfig", pathBuf);
+                SceneParam.selectedLevel = pathBuf;
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Sim");
             });
-            btnExtend.speed = 10;
-            btnExtend.retractedMin = new Vector2(normalMargin, 1.0f - yOffset);
-            btnExtend.retractedMax = new Vector2(1.0f - normalMargin, 1.0f - yOffset);
-            btnExtend.extendedMin = new Vector2(hoverMargin, 1.0f - yOffset);
-            btnExtend.extendedMax = new Vector2(1.0f - hoverMargin, 1.0f - yOffset);
-            EventTrigger.Entry onEnter = new EventTrigger.Entry();
-            onEnter.eventID = EventTriggerType.PointerEnter;
-            onEnter.callback.AddListener((eventData) => btnExtend.OnFocus());
-            trigger.triggers.Add(onEnter);
-            EventTrigger.Entry onExit = new EventTrigger.Entry();
-            onExit.eventID = EventTriggerType.PointerExit;
-            onExit.callback.AddListener((eventData) => btnExtend.OnFocusLost());
-            trigger.triggers.Add(onExit);
 
             rectText.anchorMin = new Vector2(0.0f, 0.0f);
             rectText.anchorMax = new Vector2(1.0f, 1.0f);
@@ -81,7 +64,7 @@ public class InputListBuilder : MonoBehaviour {
             text.font = font;
             text.color = Color.black;
             text.alignment = TextAnchor.MiddleCenter;
-            text.text = inputNames[i];
+            text.text = levelNames[i];
         }
     }
 
