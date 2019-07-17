@@ -562,7 +562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -704,12 +704,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d184b9b924729d54eb10cc28cb9c620a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yOffset: 0.1
-  height: 200
+  yOffset: 0.5
+  height: 300
   margin: 10
   btnSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   font: {fileID: 12800000, guid: 547a90c739bfb1a4b8731837b7c2861c, type: 3}
-  testSprite: {fileID: 21300000, guid: 1107546964818d640b400bc7b9b0f197, type: 3}
 --- !u!1 &1414439058
 GameObject:
   m_ObjectHideFlags: 0

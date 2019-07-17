@@ -29,8 +29,9 @@ public class Level : Serializable {
     }
 
     public void Deserialize(XElement xml) {
-        string name = xml.Element("name").Attribute("value").Value;
+        name = xml.Element("name").Attribute("value").Value;
         string previewPath = xml.Element("preview").Attribute("value").Value;
+        previewPath = ConfigManager.basePath + "level\\" + previewPath;
         Texture2D tex = new Texture2D(768, 160);
         tex.LoadImage(StaticDataAccess.config.fs.ReadB(previewPath));
         tex.Apply();
