@@ -763,7 +763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27043840ec0033d499167685edcd0e8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleThrottle: 0.04
+  idleThrottle: 0.01
   thrust: 60
   Cd: 0.4
   areaTop: 0.0064

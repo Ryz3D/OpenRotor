@@ -102,12 +102,13 @@ public class Quad : MonoBehaviour, Serializable {
 			float thrCurrent = 0.0f;
 			float rotCurrent = 0.0f;
 			if (powertrain == null) {
-				thrCurrent = Mathf.Abs(throttle * 200); // powertrain eval
-				rotCurrent = new Vector3(pitch, yaw, -roll).magnitude * 20; // powertrain eval
+				thrCurrent = Mathf.Abs(throttle * 200);
+				rotCurrent = new Vector3(pitch, yaw, -roll).magnitude * 20;
 			}
 			else {
-				thrCurrent = powertrain.getCurrent(throttle);
-				rotCurrent = powertrain.getCurrent(new Vector3(pitch, yaw, -roll).magnitude);
+				thrCurrent = powertrain.throttleCurrentCurve.Evaluate(throttle);
+				// might need to tweak the scale
+				rotCurrent = powertrain.throttleCurrentCurve.Evaluate(new Vector3(pitch, yaw, -roll).magnitude / 30.0f);
 			}
 			lipo.expectedCurrent = thrCurrent + rotCurrent;
 			if (lipo.expectedCurrent > 0) {
@@ -115,8 +116,14 @@ public class Quad : MonoBehaviour, Serializable {
 				float rotFraction = rotCurrent / lipo.expectedCurrent;
 				float power = lipo.actualCurrent * lipo.totalVoltage;
 
-				force = 0.017f * Vector3.up * power * thrFraction; // powertrain eval
-				torque = 0.01f * new Vector3(pitchOut, yawOut, -rollOut) * power * rotFraction; // powertrain eval
+				if (powertrain == null) {
+					force = 0.017f * Vector3.up * power * thrFraction;
+					torque = 0.01f * new Vector3(pitchOut, yawOut, -rollOut) * power * rotFraction;
+				}
+				else {
+					force = 0.017f * Vector3.up * power * thrFraction;
+					torque = 0.01f * new Vector3(pitchOut, yawOut, -rollOut) * power * rotFraction;
+				}
 			}
 		}
 
