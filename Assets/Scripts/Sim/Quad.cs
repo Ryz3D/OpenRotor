@@ -6,20 +6,21 @@ using UnityEngine;
 
 public class Quad : MonoBehaviour, Serializable {
 	public float idleThrottle;
-	public float prRate;
-	public float prExpo;
-	public float yRate;
-	public float yExpo;
 	public float thrust;
 	public float Cd;
 	public float areaTop;
 	public float areaFront;
 	public float rotDrag;
 	public float propwashFactor;
+	public PIDProfile pidProfile;
+	public RateProfile rateProfile;
 
+	private PID pidRoll;
+	private PID pidPitch;
+	private PID pidYaw;
 	private Rigidbody rb;
 	private Lipo lipo;
-	//private Powertrain powertrain;
+	private Powertrain powertrain;
 	private Transform quadMesh;
 	private Vector3 startPos;
 	private Quaternion startRot;
@@ -31,34 +32,20 @@ public class Quad : MonoBehaviour, Serializable {
 		if (lipo == null) {
 			lipo = GetComponentInChildren<Lipo>();
 		}
+		powertrain = GetComponent<Powertrain>();
+		if (powertrain == null) {
+			powertrain = GetComponentInChildren<Powertrain>();
+		}
+
+		rb.maxAngularVelocity = 35;
 
 		quadMesh = transform.GetChild(0);
 		startPos = transform.position;
 		startRot = transform.rotation;
-	}
 
-	float ApplyRates(float input, float rc, float expo, float super) {
-		// from https://github.com/cleanflight/cleanflight/blob/83ed5df868e428ee530059565b47a8146c7a4484/src/main/fc/fc_rc.c#L117
-
-		float rcRateIncremental = 14.54f;
-		if (expo > 0.0f) {
-			float expof = expo / 100.0f;
-			input = input * Mathf.Pow(Mathf.Abs(input), 3) * expof + input * (1 - expof);
-		}
-
-		float rcRate = rc / 100.0f;
-		if (rcRate > 2.0f) {
-			rcRate += rcRateIncremental * (rcRate - 2.0f);
-		}
-		float angleRate = 200.0f * rcRate * input;
-		if (super > 0.0f) {
-			float rcSuperfactor = 1.0f / (Mathf.Clamp(1.0f - (Mathf.Abs(input) * (super / 100.0f)), 0.01f, 1.00f));
-			angleRate *= rcSuperfactor;
-		}
-
-		Debug.Log(angleRate);
-
-		return angleRate;
+		pidRoll = new PID();
+		pidPitch = new PID();
+		pidYaw = new PID();
 	}
 
 	void FixedUpdate() {
@@ -87,16 +74,23 @@ public class Quad : MonoBehaviour, Serializable {
 		}
 
 		float throttle = StaticDataAccess.config.input.GetAxisThrottle();
-		float yaw = StaticDataAccess.config.input.GetAxisYaw();
-		float pitch = StaticDataAccess.config.input.GetAxisPitch();
 		float roll = StaticDataAccess.config.input.GetAxisRoll();
-
-		//Debug.Log(ApplyRates(roll, 1.0f, 0.0f, 0.0f));
+		float pitch = StaticDataAccess.config.input.GetAxisPitch();
+		float yaw = StaticDataAccess.config.input.GetAxisYaw();
 
 		throttle += idleThrottle;
-		yaw = ApplyExpo(yaw, yExpo) * yRate;
-		pitch = ApplyExpo(pitch, prExpo) * prRate;
-		roll = ApplyExpo(roll, prExpo) * prRate;
+		roll = rateProfile.ApplyRoll(roll) * Mathf.Deg2Rad;
+		pitch = rateProfile.ApplyPitch(pitch) * Mathf.Deg2Rad;
+		yaw = rateProfile.ApplyYaw(yaw) * Mathf.Deg2Rad;
+
+		pidRoll.ApplyProfile(pidProfile, PIDAxis.Roll);
+		pidPitch.ApplyProfile(pidProfile, PIDAxis.Pitch);
+		pidYaw.ApplyProfile(pidProfile, PIDAxis.Yaw);
+
+		Vector3 localRot = transform.InverseTransformVector(rb.angularVelocity);
+		float rollOut = pidRoll.Calculate(-localRot.z, roll);
+		float pitchOut = pidPitch.Calculate(localRot.x, pitch);
+		float yawOut = pidYaw.Calculate(localRot.y, yaw);
 
 		Vector3 force = Vector3.zero;
 		Vector3 torque = Vector3.zero;
@@ -105,8 +99,16 @@ public class Quad : MonoBehaviour, Serializable {
 			torque = new Vector3(pitch, yaw, -roll);
 		}
 		else {
-			float thrCurrent = Mathf.Abs(throttle * thrust * 4); // powertrain eval
-			float rotCurrent = new Vector3(pitch, yaw, -roll).magnitude * 20; // powertrain eval
+			float thrCurrent = 0.0f;
+			float rotCurrent = 0.0f;
+			if (powertrain == null) {
+				thrCurrent = Mathf.Abs(throttle * 200); // powertrain eval
+				rotCurrent = new Vector3(pitch, yaw, -roll).magnitude * 20; // powertrain eval
+			}
+			else {
+				thrCurrent = powertrain.getCurrent(throttle);
+				rotCurrent = powertrain.getCurrent(new Vector3(pitch, yaw, -roll).magnitude);
+			}
 			lipo.expectedCurrent = thrCurrent + rotCurrent;
 			if (lipo.expectedCurrent > 0) {
 				float thrFraction = thrCurrent / lipo.expectedCurrent;
@@ -114,7 +116,7 @@ public class Quad : MonoBehaviour, Serializable {
 				float power = lipo.actualCurrent * lipo.totalVoltage;
 
 				force = 0.017f * Vector3.up * power * thrFraction; // powertrain eval
-				torque = 0.01f * new Vector3(pitch, yaw, -roll) * power * rotFraction; // powertrain eval
+				torque = 0.01f * new Vector3(pitchOut, yawOut, -rollOut) * power * rotFraction; // powertrain eval
 			}
 		}
 
@@ -138,15 +140,11 @@ public class Quad : MonoBehaviour, Serializable {
 			rb.angularDrag = rotDrag;
 		}
 		else {
-			rb.angularDrag = rotDrag / 2.0f / Mathf.Max(1.0f, torque.magnitude);
+			rb.angularDrag = rotDrag / 5.0f / Mathf.Max(1.0f, torque.magnitude);
 		}
 
 		rb.AddRelativeForce(force);
 		rb.AddRelativeTorque(torque);
-	}
-
-	private float ApplyExpo(float v, float e) {
-		return Mathf.Pow(v, 3) * e + v - v * e;
 	}
 
 	private float ReadValue(XElement xml, string name) {
@@ -168,10 +166,6 @@ public class Quad : MonoBehaviour, Serializable {
 
     public void Deserialize(XElement xml) {
         idleThrottle = ReadValue(xml, "idleThrottle");
-        prRate = ReadValue(xml, "prRate");
-        prExpo = ReadValue(xml, "prExpo");
-        yRate = ReadValue(xml, "yRate");
-        yExpo = ReadValue(xml, "yExpo");
         thrust = ReadValue(xml, "thrust");
         Cd = ReadValue(xml, "Cd");
         areaTop = ReadValue(xml, "areaTop");
@@ -196,10 +190,6 @@ public class Quad : MonoBehaviour, Serializable {
         return new XElement(
             "quad",
             WriteValue("idleThrottle", idleThrottle),
-            WriteValue("prRate", prRate),
-            WriteValue("prExpo", prExpo),
-            WriteValue("yRate", yRate),
-            WriteValue("yExpo", yExpo),
             WriteValue("thrust", thrust),
             WriteValue("Cd", Cd),
             WriteValue("areaTop", areaTop),

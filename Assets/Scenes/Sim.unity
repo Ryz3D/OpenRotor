@@ -551,7 +551,7 @@ Camera:
   m_projectionMatrixMode: 2
   m_SensorSize: {x: 6.4, y: 3.6}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 2
+  m_FocalLength: 2.1
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -560,7 +560,7 @@ Camera:
     height: 1
   near clip plane: 0.05
   far clip plane: 1000
-  field of view: 83.97443
+  field of view: 81.20259
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -690,6 +690,7 @@ GameObject:
   - component: {fileID: 1289625326}
   - component: {fileID: 1289625324}
   - component: {fileID: 1289625321}
+  - component: {fileID: 1289625322}
   m_Layer: 0
   m_Name: kwad
   m_TagString: copter
@@ -719,9 +720,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 1289625319}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e659ad61a566604ca3196116071b53c, type: 3}
+  m_Script: {fileID: 11500000, guid: e707a87c2670499408f03283a5d6fa24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rollRC: 1.39
+  rollExpo: 0.68
+  rollSuper: 0.11
+  pitchRC: 1.39
+  pitchExpo: 0.68
+  pitchSuper: 0.11
+  yawRC: 1.39
+  yawExpo: 0.68
+  yawSuper: 0.11
+--- !u!114 &1289625322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1289625319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f5f86162a7595844879e22bb3eb4944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollP: 0.02
+  rollI: 0.0001
+  rollD: 0
+  pitchP: 0.02
+  pitchI: 0.0001
+  pitchD: 0
+  yawP: 0.02
+  yawI: 0.0001
+  yawD: 0
 --- !u!114 &1289625324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -734,15 +764,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleThrottle: 0.04
-  prRate: 1.4
-  prExpo: 0.7
-  yRate: 1.2
-  yExpo: 0.7
-  thrust: 32
-  Cd: 0.85
+  thrust: 60
+  Cd: 0.4
   areaTop: 0.0064
   areaFront: 0.0025
-  rotDrag: 12
+  rotDrag: 4
   propwashFactor: 0.01
 --- !u!54 &1289625325
 Rigidbody:
@@ -751,9 +777,9 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1289625319}
   serializedVersion: 2
-  m_Mass: 0.55
+  m_Mass: 0.5
   m_Drag: 0.5
-  m_AngularDrag: 6
+  m_AngularDrag: 4
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -836,7 +862,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  doesDischarge: 1
+  doesDischarge: 0
   doesSag: 1
   cellCount: 4
   capacity: 1.55
