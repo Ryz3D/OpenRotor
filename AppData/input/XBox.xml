@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customInput>
+  <axis key="throttle">
+    <simpleAxis axisName="axis1" invert="1" />
+  </axis>
+  <axis key="roll">
+    <simpleAxis axisName="axis3" invert="0" />
+  </axis>
+  <axis key="pitch">
+    <simpleAxis axisName="axis4" invert="1" />
+  </axis>
+  <axis key="yaw">
+    <simpleAxis axisName="axis0" invert="0" />
+  </axis>
+  <axis key="tilt">
+    <simpleAxis axisName="axis6" invert="0" />
+  </axis>
+  <axis key="fov">
+    <simpleAxis axisName="axis5" invert="0" />
+  </axis>
+  <axis key="exit">
+    <buttonAxis btnHigh="btn7" />
+  </axis>
+  <axis key="submit">
+    <buttonAxis btnHigh="btn0" />
+  </axis>
+  <axis key="reset">
+    <buttonAxis btnHigh="btn5" />
+  </axis>
+  <axis key="flip">
+    <buttonAxis btnHigh="btn4" />
+  </axis>
+</customInput>

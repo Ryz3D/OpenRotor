@@ -10,9 +10,12 @@ public class DataCurve : Serializable {
     private float fraction;
     private float lowerBounds;
     private float upperBounds;
+    private float lowerValue;
+    private float upperValue;
     private bool cached;
 
     public DataCurve() {
+        points = new Dictionary<float, float>();
         cached = false;
     }
 
@@ -27,10 +30,13 @@ public class DataCurve : Serializable {
 
             float[] keys = new float[points.Count];
             points.Keys.CopyTo(keys, 0);
+            float[] values = new float[points.Count];
+            points.Values.CopyTo(values, 0);
             int upper = -1;
             for (int i = 0; i < points.Count; i++) {
                 if (keys[i] > x) {
                     upper = i;
+                    break;
                 }
             }
             if (upper == -1) {
@@ -44,7 +50,8 @@ public class DataCurve : Serializable {
             }
             lowerBounds = keys[upper - 1];
             upperBounds = keys[upper];
-
+            lowerValue = values[upper - 1];
+            upperValue = values[upper];
             cached = true;
         }
 
@@ -53,7 +60,7 @@ public class DataCurve : Serializable {
             cached = false;
             return Evaluate(x);
         }
-        return Mathf.Lerp(lowerBounds, upperBounds, fraction);
+        return Mathf.Lerp(lowerValue, upperValue, fraction);
     }
 
     public void Deserialize(XElement xml) {

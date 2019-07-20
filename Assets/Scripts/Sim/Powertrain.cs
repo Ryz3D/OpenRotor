@@ -1,7 +1,9 @@
-using UnityEngine;
-using System.Collections.Generic;
-
-public class Powertrain : MonoBehaviour {
+public class Powertrain {
     public DataCurve throttleCurrentCurve;
     public DataCurve currentThrustCurve;
+
+    public Powertrain() {
+        throttleCurrentCurve = new DataCurve();
+        currentThrustCurve = new DataCurve();
+    }
 }

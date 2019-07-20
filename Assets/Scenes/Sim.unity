@@ -724,13 +724,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rollRC: 1.39
-  rollExpo: 0.68
+  rollExpo: 0.62
   rollSuper: 0.11
   pitchRC: 1.39
-  pitchExpo: 0.68
+  pitchExpo: 0.62
   pitchSuper: 0.11
   yawRC: 1.39
-  yawExpo: 0.68
+  yawExpo: 0.62
   yawSuper: 0.11
 --- !u!114 &1289625322
 MonoBehaviour:
@@ -744,13 +744,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rollP: 0.02
-  rollI: 0.0001
+  rollI: 0.002
   rollD: 0
   pitchP: 0.02
-  pitchI: 0.0001
+  pitchI: 0.002
   pitchD: 0
   yawP: 0.02
-  yawI: 0.0001
+  yawI: 0.002
   yawD: 0
 --- !u!114 &1289625324
 MonoBehaviour:
@@ -763,12 +763,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27043840ec0033d499167685edcd0e8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleThrottle: 0.01
+  idleThrottle: 0.07
   thrust: 60
-  Cd: 0.4
+  Cd: 0.55
   areaTop: 0.0064
   areaFront: 0.0025
-  rotDrag: 4
+  rotDrag: 6
   propwashFactor: 0.01
 --- !u!54 &1289625325
 Rigidbody:
@@ -777,9 +777,9 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1289625319}
   serializedVersion: 2
-  m_Mass: 0.5
+  m_Mass: 0.55
   m_Drag: 0.5
-  m_AngularDrag: 4
+  m_AngularDrag: 7
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0

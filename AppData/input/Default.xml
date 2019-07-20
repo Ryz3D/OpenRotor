@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customInput>
+  <axis key="throttle">
+    <keyAxis keyLow="S" keyHigh="W" />
+  </axis>
+  <axis key="roll">
+    <keyAxis keyLow="Keypad4" keyHigh="Keypad6" />
+  </axis>
+  <axis key="pitch">
+    <keyAxis keyLow="Keypad2" keyHigh="Keypad8" />
+  </axis>
+  <axis key="yaw">
+    <keyAxis keyLow="A" keyHigh="D" />
+  </axis>
+  <axis key="tilt">
+    <keyAxis keyLow="DownArrow" keyHigh="UpArrow" />
+  </axis>
+  <axis key="fov">
+    <keyAxis keyLow="LeftArrow" keyHigh="RightArrow" />
+  </axis>
+  <axis key="exit">
+    <keyAxis keyLow="None" keyHigh="Escape" />
+  </axis>
+  <axis key="submit">
+    <keyAxis keyLow="None" keyHigh="Return" />
+  </axis>
+  <axis key="reset">
+    <keyAxis keyLow="None" keyHigh="R" />
+  </axis>
+  <axis key="flip">
+    <keyAxis keyLow="None" keyHigh="F" />
+  </axis>
+</customInput>

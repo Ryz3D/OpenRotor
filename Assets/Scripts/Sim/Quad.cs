@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -32,10 +33,6 @@ public class Quad : MonoBehaviour, Serializable {
 		if (lipo == null) {
 			lipo = GetComponentInChildren<Lipo>();
 		}
-		powertrain = GetComponent<Powertrain>();
-		if (powertrain == null) {
-			powertrain = GetComponentInChildren<Powertrain>();
-		}
 
 		rb.maxAngularVelocity = 35;
 
@@ -46,6 +43,12 @@ public class Quad : MonoBehaviour, Serializable {
 		pidRoll = new PID();
 		pidPitch = new PID();
 		pidYaw = new PID();
+
+		XDocument thrcur = XDocument.Parse(StaticDataAccess.config.fs.Read(ConfigManager.basePath + "/thrcur.xml"));
+		XDocument curthr = XDocument.Parse(StaticDataAccess.config.fs.Read(ConfigManager.basePath + "/curthr.xml"));
+		powertrain = new Powertrain();
+		powertrain.throttleCurrentCurve.Deserialize(thrcur.Element("dataCurve"));
+		powertrain.currentThrustCurve.Deserialize(curthr.Element("dataCurve"));
 	}
 
 	void FixedUpdate() {
@@ -78,7 +81,7 @@ public class Quad : MonoBehaviour, Serializable {
 		float pitch = StaticDataAccess.config.input.GetAxisPitch();
 		float yaw = StaticDataAccess.config.input.GetAxisYaw();
 
-		throttle += idleThrottle;
+		throttle = Mathf.Clamp01(throttle + idleThrottle);
 		roll = rateProfile.ApplyRoll(roll) * Mathf.Deg2Rad;
 		pitch = rateProfile.ApplyPitch(pitch) * Mathf.Deg2Rad;
 		yaw = rateProfile.ApplyYaw(yaw) * Mathf.Deg2Rad;
@@ -121,8 +124,8 @@ public class Quad : MonoBehaviour, Serializable {
 					torque = 0.01f * new Vector3(pitchOut, yawOut, -rollOut) * power * rotFraction;
 				}
 				else {
-					force = 0.017f * Vector3.up * power * thrFraction;
-					torque = 0.01f * new Vector3(pitchOut, yawOut, -rollOut) * power * rotFraction;
+					force = 0.025f * Vector3.up * power * thrFraction;
+					torque = 0.07f * new Vector3(pitchOut, yawOut, -rollOut) * power * rotFraction;
 				}
 			}
 		}
