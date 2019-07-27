@@ -194,7 +194,6 @@ public class Quad : MonoBehaviour, Serializable {
     }
 
     public XElement Serialize() {
-        List<XElement> children = new List<XElement>();
         // bloody hell clean this up
         // look into marshaling or something
         return new XElement(

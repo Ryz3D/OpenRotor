@@ -261,6 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b38da126061a3a4b89c4e2478298099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testMaterial: {fileID: 2100000, guid: 46f825928c3964c48a94355301654361, type: 2}
 --- !u!1001 &169267402
 Prefab:
   m_ObjectHideFlags: 0
@@ -302,15 +303,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_Enabled
@@ -326,7 +327,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 77716263c2fe226449231415bce8bcef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 400010, guid: 77716263c2fe226449231415bce8bcef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 400008, guid: 77716263c2fe226449231415bce8bcef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 77716263c2fe226449231415bce8bcef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: 77716263c2fe226449231415bce8bcef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77716263c2fe226449231415bce8bcef, type: 3}
@@ -416,6 +437,24 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300008, guid: 77716263c2fe226449231415bce8bcef, type: 3}
+--- !u!1 &333293078 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 77716263c2fe226449231415bce8bcef,
+    type: 3}
+  m_PrefabInternal: {fileID: 169267402}
+--- !u!114 &333293080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 333293078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a84967882f63df42a435c00cd0ed76f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lvlName: test
+  previewPath: test.png
 --- !u!1 &466689806
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,6 +3,8 @@ using System.Xml.Linq;
 using UnityEngine;
 
 public class LevelLoader : MonoBehaviour {
+    public Material testMaterial;
+
     public Level level;
 
     void Awake() {
@@ -23,6 +25,8 @@ public class LevelLoader : MonoBehaviour {
                     level.UnloadLevel();
                 }
                 level.Deserialize(elem);
+                level.LoadLevel(testMaterial);
+                Debug.Log("level loaded: '" + level.name + "' (" + SceneParam.selectedLevel + ")");
             }
         }
     }

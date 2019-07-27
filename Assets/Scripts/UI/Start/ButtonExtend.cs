@@ -10,11 +10,9 @@ public class ButtonExtend : MonoBehaviour {
 
     private float position;
     private float target;
-    private Button btn;
     private RectTransform rect;
 
     void Start() {
-        btn = GetComponent<Button>();
         rect = GetComponent<RectTransform>();
     }
 

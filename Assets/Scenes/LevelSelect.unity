@@ -704,7 +704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d184b9b924729d54eb10cc28cb9c620a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yOffset: 0.5
+  yOffset: 0.25
   height: 300
   margin: 10
   btnSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}

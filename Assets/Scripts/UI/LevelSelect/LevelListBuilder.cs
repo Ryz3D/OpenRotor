@@ -26,7 +26,7 @@ public class LevelListBuilder : MonoBehaviour {
                 }
 
                 levels.Add(new Level());
-                levels.Last().Deserialize(elem);
+                levels.Last().PreDeserialize(elem);
             }
         }
 

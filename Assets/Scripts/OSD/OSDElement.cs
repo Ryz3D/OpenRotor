@@ -12,7 +12,7 @@ public abstract class OSDElement {
         GameObject canvas = GameObject.Find("canvas");
         gameObject = new GameObject("osdElement");
         gameObject.transform.parent = canvas.transform;
-        RectTransform rect = gameObject.AddComponent<RectTransform>();
+        gameObject.AddComponent<RectTransform>();
         Start();
     }
     protected abstract void Start();
