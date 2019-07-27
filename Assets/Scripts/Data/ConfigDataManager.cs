@@ -4,7 +4,6 @@ using System.Xml.Linq;
 using UnityEngine;
 
 public class ConfigDataManager : MonoBehaviour {
-    public string inputConfigOverride;
     public string osdConfigOverride;
 
     private string[] subFolders = {
@@ -35,10 +34,13 @@ public class ConfigDataManager : MonoBehaviour {
             fs = new FSWindows();
         }
 
+        // deprecated, due to settings page
+        /*
         if (inputConfigOverride != "") {
             input = null;
             PlayerPrefs.SetString("inputConfig", inputConfigOverride);
         }
+        */
         if (osdConfigOverride != "") {
             osdElements = new List<string>(); // make sure it loads
             PlayerPrefs.SetString("osdConfig", osdConfigOverride);
