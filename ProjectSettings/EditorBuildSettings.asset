@@ -9,11 +9,26 @@ EditorBuildSettings:
     path: Assets/Scenes/Start.unity
     guid: 863a1409a524b7543a6d111705a23925
   - enabled: 1
-    path: Assets/Scenes/LevelSelect.unity
-    guid: 96c9736e96657804989d91faae4891f2
+    path: Assets/Scenes/Settings.unity
+    guid: 24f28a7fa74c4b240825a2a465d69bcb
+  - enabled: 1
+    path: Assets/Scenes/VideoSettings.unity
+    guid: 80e95591eac43614a8f99ad7da5f253e
+  - enabled: 1
+    path: Assets/Scenes/AudioSettings.unity
+    guid: 768d5f6fad70da340b73c35443633721
   - enabled: 1
     path: Assets/Scenes/InputSettings.unity
     guid: 8debb10506c989d4cac1eb66fd02b99d
+  - enabled: 1
+    path: Assets/Scenes/GameSettings.unity
+    guid: 68a9d0230fd09e648a83e4df2c1dda02
+  - enabled: 1
+    path: Assets/Scenes/CopterSettings.unity
+    guid: 52562648dd1274a4195ff69ef565bf12
+  - enabled: 1
+    path: Assets/Scenes/LevelSelect.unity
+    guid: 96c9736e96657804989d91faae4891f2
   - enabled: 1
     path: Assets/Scenes/Sim.unity
     guid: 99c9720ab356a0642a771bea13969a05

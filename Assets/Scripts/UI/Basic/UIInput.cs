@@ -23,33 +23,52 @@ public class UIInput : MonoBehaviour {
     */
 
 	void Update() {
-		CustomInputAxis cancel = ((CustomInput)StaticDataAccess.config.input).axis[6];
-		CustomInputAxis submit = ((CustomInput)StaticDataAccess.config.input).axis[7];
-		CustomInputAxis horizontal = ((CustomInput)StaticDataAccess.config.input).axis[1];
-		CustomInputAxis vertical = ((CustomInput)StaticDataAccess.config.input).axis[2];
+		input.cancelButton = "empty";
+		input.submitButton = "empty";
+		input.horizontalAxis = "empty";
+		input.verticalAxis = "empty";
 
+		if (StaticDataAccess.config == null) {
+			return;
+		}
+		if (StaticDataAccess.config.input == null) {
+			return;
+		}
+	
 		string cancelStr = "empty";
 		string submitStr = "empty";
 		string horizontalStr = "empty";
 		string verticalStr = "empty";
 
-		if (cancel is ButtonInputAxis) {
-			cancelStr = ((ButtonInputAxis)cancel).btnHigh;
+		CustomInput inp = (CustomInput)StaticDataAccess.config.input;
+		CustomInputAxis cancel = inp.axis.Length > 6 ? inp.axis[6] : null;
+		CustomInputAxis submit = inp.axis.Length > 7 ? inp.axis[7] : null;
+		CustomInputAxis horizontal = inp.axis.Length > 1 ? inp.axis[1] : null;
+		CustomInputAxis vertical = inp.axis.Length > 2 ? inp.axis[2] : null;
+
+		if (cancel != null) {
+			if (cancel is ButtonInputAxis) {
+				cancelStr = ((ButtonInputAxis)cancel).btnHigh;
+			}
+			if (cancel is SimpleInputAxis) {
+				cancelStr = ((SimpleInputAxis)cancel).axisName;
+			}
 		}
-		if (cancel is SimpleInputAxis) {
-			cancelStr = ((SimpleInputAxis)cancel).axisName;
+		if (submit != null) {
+			if (submit is ButtonInputAxis) {
+				submitStr = ((ButtonInputAxis)submit).btnHigh;
+			}
+			if (submit is SimpleInputAxis) {
+				submitStr = ((SimpleInputAxis)submit).axisName;
+			}
 		}
-		if (submit is ButtonInputAxis) {
-			submitStr = ((ButtonInputAxis)submit).btnHigh;
-		}
-		if (submit is SimpleInputAxis) {
-			submitStr = ((SimpleInputAxis)submit).axisName;
-		}
-		if (horizontal is SimpleInputAxis) {
-			horizontalStr = ((SimpleInputAxis)horizontal).axisName;
-		}
-		if (vertical is SimpleInputAxis) {
-			verticalStr = ((SimpleInputAxis)vertical).axisName;
+		if (horizontal != null) {
+			if (horizontal is SimpleInputAxis) {
+				horizontalStr = ((SimpleInputAxis)horizontal).axisName;
+			}
+			if (vertical is SimpleInputAxis) {
+				verticalStr = ((SimpleInputAxis)vertical).axisName;
+			}
 		}
 
 		input.cancelButton = cancelStr;

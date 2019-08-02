@@ -13,6 +13,13 @@ public class RateProfileDebug : MonoBehaviour {
     }
 
     void Update() {
+        if (quad == null) {
+            return;
+        }
+        if (quad.rateProfile == null) {
+            quad.rateProfile = new RateProfile();
+        }
+
         quad.rateProfile.rollRC = rollRC;
         quad.rateProfile.rollExpo = rollExpo;
         quad.rateProfile.rollSuper = rollSuper;

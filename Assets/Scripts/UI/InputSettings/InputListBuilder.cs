@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InputListBuilder : MonoBehaviour {
@@ -11,6 +12,8 @@ public class InputListBuilder : MonoBehaviour {
     public float height = 30;
     public Sprite btnSprite;
     public Font font;
+    public Color colorActive;
+    public Color colorInactive;
 
     public void Rebuild() {
         List<string> paths = new List<string>();
@@ -58,12 +61,13 @@ public class InputListBuilder : MonoBehaviour {
 
             img.sprite = btnSprite;
             img.type = Image.Type.Sliced;
+            img.color = PlayerPrefs.GetString("inputConfig") == paths[i] ? colorActive : colorInactive;
             btn.onClick = new Button.ButtonClickedEvent();
             // i will be incremented at onClick call
             string pathBuf = paths[i];
             btn.onClick.AddListener(() => {
                 PlayerPrefs.SetString("inputConfig", pathBuf);
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Sim");
+                SceneManager.UnloadSceneAsync(gameObject.scene);
             });
 
             btnExtend.speed = 10;

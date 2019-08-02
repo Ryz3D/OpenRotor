@@ -26,6 +26,11 @@ public class LevelLoader : MonoBehaviour {
                 }
                 level.Deserialize(elem);
                 level.LoadLevel(testMaterial);
+                LevelElement spawn = level.elements.Find(l => l.name == "spawn");
+                if (spawn != null) {
+                    GameObject.FindGameObjectWithTag("copter").transform.position = spawn.position;
+                    GameObject.FindGameObjectWithTag("copter").transform.rotation = spawn.rotation;
+                }
                 Debug.Log("level loaded: '" + level.name + "' (" + SceneParam.selectedLevel + ")");
             }
         }

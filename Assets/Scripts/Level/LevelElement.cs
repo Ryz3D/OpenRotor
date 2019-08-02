@@ -20,6 +20,17 @@ public class LevelElement : Serializable {
     public List<string> materialNames;
     public List<Material> materials;
 
+    public LevelElement() {
+        name = "";
+        position = Vector3.zero;
+        rotation = Quaternion.identity;
+        scale = Vector3.one;
+        collider = ColliderType.Unkown;
+        mesh = new Mesh();
+        materialNames = new List<string>();
+        materials = new List<Material>();
+    }
+
     public void Load(GameObject parent, Material material) {
         materials = new List<Material>() { material }; // TODO
 

@@ -52,6 +52,13 @@ public class Quad : MonoBehaviour, Serializable {
 	}
 
 	void FixedUpdate() {
+		if (StaticDataAccess.config == null) {
+			return;
+		}
+		if (StaticDataAccess.config.input == null) {
+			return;
+		}
+
 		if (StaticDataAccess.config.input.GetBtnReset()) {
 			transform.position = startPos;
 			transform.rotation = startRot;

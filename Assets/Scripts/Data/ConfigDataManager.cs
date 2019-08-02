@@ -97,5 +97,9 @@ public class ConfigDataManager : MonoBehaviour {
             PlayerPrefs.SetFloat("focalLength", 2.1f);
         }
         Camera.main.focalLength = PlayerPrefs.GetFloat("focalLength");
+        if (!PlayerPrefs.HasKey("camTilt")) {
+            PlayerPrefs.SetFloat("camTilt", 20.0f);
+        }
+        Camera.main.transform.eulerAngles = new Vector3(-PlayerPrefs.GetFloat("camTilt"), 0.0f, 0.0f);
     }
 }

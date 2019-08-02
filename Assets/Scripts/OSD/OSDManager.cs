@@ -63,6 +63,10 @@ public class OSDManager : MonoBehaviour {
     }
 
     void Update() {
+        if (StaticDataAccess.config == null) {
+            return;
+        }
+
         if (StaticDataAccess.config.uiRebuild || Screen.width != resXCache || Screen.height != resYCache) {
             Rebuild();
             StaticDataAccess.config.uiRebuild = false;

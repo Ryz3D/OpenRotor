@@ -13,6 +13,13 @@ public class PIDProfileDebug : MonoBehaviour {
     }
 
     void Update() {
+        if (quad == null) {
+            return;
+        }
+        if (quad.pidProfile == null) {
+            quad.pidProfile = new PIDProfile();
+        }
+
         quad.pidProfile.rollP = rollP;
         quad.pidProfile.rollI = rollI;
         quad.pidProfile.rollD = rollD;
