@@ -96,10 +96,13 @@ public class ConfigDataManager : MonoBehaviour {
         if (!PlayerPrefs.HasKey("focalLength")) {
             PlayerPrefs.SetFloat("focalLength", 2.1f);
         }
-        Camera.main.focalLength = PlayerPrefs.GetFloat("focalLength");
         if (!PlayerPrefs.HasKey("camTilt")) {
             PlayerPrefs.SetFloat("camTilt", 20.0f);
         }
-        Camera.main.transform.eulerAngles = new Vector3(-PlayerPrefs.GetFloat("camTilt"), 0.0f, 0.0f);
+
+        if (gameObject.scene.name == "Sim") {
+            Camera.main.focalLength = PlayerPrefs.GetFloat("focalLength");
+            Camera.main.transform.eulerAngles = new Vector3(-PlayerPrefs.GetFloat("camTilt"), 0.0f, 0.0f);
+        }
     }
 }

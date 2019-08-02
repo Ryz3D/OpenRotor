@@ -9,6 +9,7 @@ public class UIInput : MonoBehaviour {
 	void Start() {
 		input = GetComponent<StandaloneInputModule>();
 	}
+
     /*
     0: Throttle
     1: Roll

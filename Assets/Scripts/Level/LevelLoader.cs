@@ -8,7 +8,7 @@ public class LevelLoader : MonoBehaviour {
     public Level level;
 
     void Awake() {
-        if (SceneParam.selectedLevel == null) {
+        if (SceneParam.selectedLevel == "") {
             Debug.LogWarning("no level :/");
         }
         else {
