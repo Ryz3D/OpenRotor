@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a84967882f63df42a435c00cd0ed76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lvlName: test2
+  lvlName: Carpark
   previewPath: test.png
 --- !u!1 &466689806
 GameObject:
@@ -699,7 +699,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 918966826}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -7.98, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
@@ -835,8 +835,8 @@ MonoBehaviour:
   Cd: 0.55
   areaTop: 0.0064
   areaFront: 0.0025
-  rotDrag: 6
-  propwashFactor: 0.01
+  rotDrag: 10
+  propwashFactor: 0.012
 --- !u!54 &1289625325
 Rigidbody:
   m_ObjectHideFlags: 0
