@@ -4,8 +4,6 @@ using System.Xml.Linq;
 using UnityEngine;
 
 public class ConfigDataManager : MonoBehaviour {
-    public string osdConfigOverride;
-
     private string[] subFolders = {
         "",
         "input"
@@ -41,10 +39,12 @@ public class ConfigDataManager : MonoBehaviour {
             PlayerPrefs.SetString("inputConfig", inputConfigOverride);
         }
         */
+        /*
         if (osdConfigOverride != "") {
             osdElements = new List<string>(); // make sure it loads
             PlayerPrefs.SetString("osdConfig", osdConfigOverride);
         }
+        */
 
         foreach (string f in subFolders) {
             if (fs.WhatIs(ConfigManager.basePath + f) != FileType.Directory) {
