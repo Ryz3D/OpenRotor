@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae6008ca5fd9cb4498b2be7ae97b0a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  osdFont: {fileID: 12800000, guid: 8b82d9270d4c60c409bec3f6086313cc, type: 3}
+  osdFont: {fileID: 12800000, guid: a28d7a5bdc544e14d9384beb76795396, type: 3}
   osdSprites:
   - {fileID: 21300000, guid: d99e4efaa15e3f6468e8e0a18fecc0a9, type: 3}
   - {fileID: 21300000, guid: 2e1fc25d4175ed54eb20ecd74941bbdd, type: 3}
@@ -452,7 +452,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 429317260}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: meshParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -503,8 +503,8 @@ RectTransform:
   m_Father: {fileID: 1886320423}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.13, y: 0.725}
-  m_AnchorMax: {x: 0.4, y: 0.96}
+  m_AnchorMin: {x: 0.13, y: 0.87}
+  m_AnchorMax: {x: 0.25, y: 0.96}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -534,7 +534,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -579,7 +579,7 @@ GameObject:
   - component: {fileID: 534669905}
   - component: {fileID: 534669904}
   - component: {fileID: 534669903}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: kwadCam
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -613,7 +613,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 81.20259
   orthographic: 0
@@ -621,7 +621,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 311
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -646,6 +646,94 @@ Transform:
   m_Father: {fileID: 1118786597}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -25, y: 0, z: 0}
+--- !u!1 &755851014
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 755851015}
+  - component: {fileID: 755851017}
+  - component: {fileID: 755851016}
+  - component: {fileID: 755851018}
+  m_Layer: 0
+  m_Name: txtFPS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &755851015
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 755851014}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1886320423}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.74, y: 0.87}
+  m_AnchorMax: {x: 0.87, y: 0.96}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &755851016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 755851014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: a28d7a5bdc544e14d9384beb76795396, type: 3}
+    m_FontSize: 20
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 5
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 0fps
+--- !u!222 &755851017
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 755851014}
+  m_CullTransparentMesh: 0
+--- !u!114 &755851018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 755851014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd71bae304187314cb7570c550083c59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  precision: 0
 --- !u!1 &918966826
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,7 +857,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1118786597}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: camParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -802,9 +890,9 @@ GameObject:
   - component: {fileID: 1289625326}
   - component: {fileID: 1289625324}
   - component: {fileID: 1289625323}
-  - component: {fileID: 1289625321}
   - component: {fileID: 1289625322}
-  m_Layer: 0
+  - component: {fileID: 1289625321}
+  m_Layer: 9
   m_Name: kwad
   m_TagString: copter
   m_Icon: {fileID: 0}
@@ -831,20 +919,13 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1289625319}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e707a87c2670499408f03283a5d6fa24, type: 3}
+  m_Script: {fileID: 11500000, guid: cfe8277d530d3cc4ea357a7d34d3154d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rollRC: 1.39
-  rollExpo: 0.62
-  rollSuper: 0.11
-  pitchRC: 1.39
-  pitchExpo: 0.62
-  pitchSuper: 0.11
-  yawRC: 1.39
-  yawExpo: 0.62
-  yawSuper: 0.11
+  fps: {fileID: 755851014}
+  lipo: {fileID: 1289625326}
 --- !u!114 &1289625322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1084,6 +1165,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 466689807}
+  - {fileID: 755851015}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1215,7 +1297,7 @@ GameObject:
   - component: {fileID: 2067189737}
   - component: {fileID: 2067189736}
   - component: {fileID: 2067189739}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,9 +10,6 @@ public class VideoManager : MonoBehaviour {
 	public Dropdown ddnTexscale;
 	public Dropdown ddnShadow;
 	public Dropdown ddnLOD;
-	public GameObject osdParent;
-
-	private Dictionary<string, Toggle> osd;
 
 	public void Apply() {
 		PlayerPrefs.SetInt("videoRes", ddnRes.value);
@@ -49,14 +46,6 @@ public class VideoManager : MonoBehaviour {
 		QualitySettings.shadowResolution = dictShadowRes[ddnShadow.value];
 		QualitySettings.shadowDistance = dictShadowDist[ddnShadow.value];
 		QualitySettings.shadows = dictShadowQual[ddnShadow.value];
-
-		string osdString = "";
-		foreach (KeyValuePair<string, Toggle> e in osd) {
-			if (e.Value.isOn) {
-				osdString += e.Key + ",";
-			}
-		}
-		PlayerPrefs.SetString("osdConfig", osdString);
 	}
 
 	void Start() {
@@ -66,16 +55,6 @@ public class VideoManager : MonoBehaviour {
 		ddnTexscale.value = PlayerPrefs.HasKey("videoTex") ? PlayerPrefs.GetInt("videoTex") : 1;
 		ddnShadow.value = PlayerPrefs.HasKey("videoShadow") ? PlayerPrefs.GetInt("videoShadow") : 1;
 		ddnLOD.value = PlayerPrefs.HasKey("videoLOD") ? PlayerPrefs.GetInt("videoLOD") : 1;
-
-		string osdString = PlayerPrefs.HasKey("osdConfig") ? PlayerPrefs.GetString("osdConfig") : "";
-		osd = new Dictionary<string, Toggle>();
-		for (int i = 0; i < osdParent.transform.childCount; i++) {
-			string key = osdParent.transform.GetChild(i).name;
-			Toggle value = osdParent.transform.GetChild(i).GetComponentInChildren<Toggle>();
-			osd.Add(key, value);
-
-			value.isOn = osdString.Contains(key + ",");
-		}
 	}
 
 	void Update() {

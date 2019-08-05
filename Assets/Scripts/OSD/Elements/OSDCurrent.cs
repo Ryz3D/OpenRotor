@@ -17,15 +17,15 @@ public class OSDCurrent : OSDElement {
             }
         }
 
-        rect.anchorMin = new Vector2(0.82f, 0.8f);
-        rect.anchorMax = new Vector2(1.0f, 0.9f);
+        rect.anchorMin = new Vector2(0.8f, 0.8f);
+        rect.anchorMax = new Vector2(0.98f, 0.9f);
         rect.offsetMin = rect.offsetMax = Vector2.zero;
         rect.anchoredPosition = Vector2.zero;
         rect.sizeDelta = Vector2.zero;
         text.resizeTextMinSize = 15;
         text.resizeTextMaxSize = 40;
         text.fontSize = 25;
-        text.alignment = TextAnchor.MiddleLeft;
+        text.alignment = TextAnchor.MiddleRight;
         text.font = font;
         text.raycastTarget = false;
     }
