@@ -7,7 +7,6 @@ public class SceneSwitcher : MonoBehaviour {
     }
 
     public void SwitchString(string str) {
-        SceneParam.lastScene = gameObject.scene.name;
         SceneManager.LoadScene(str, LoadSceneMode.Single);
     }
 
