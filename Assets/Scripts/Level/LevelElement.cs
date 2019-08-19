@@ -17,8 +17,7 @@ public class LevelElement : Serializable {
     public Vector3 scale;
     public ColliderType collider;
     public Mesh mesh;
-    public List<string> materialNames;
-    public List<Material> materials;
+    public List<LevelMat> materials;
 
     public LevelElement() {
         name = "";
@@ -27,13 +26,10 @@ public class LevelElement : Serializable {
         scale = Vector3.one;
         collider = ColliderType.Unkown;
         mesh = new Mesh();
-        materialNames = new List<string>();
-        materials = new List<Material>();
+        materials = new List<LevelMat>();
     }
 
-    public void Load(GameObject parent, Material material) {
-        materials = new List<Material>() { material }; // TODO
-
+    public void Load(GameObject parent) {
         GameObject go = new GameObject(name);
         go.transform.parent = parent.transform;
         go.transform.localPosition = position;
@@ -43,7 +39,11 @@ public class LevelElement : Serializable {
         MeshFilter filter = go.AddComponent<MeshFilter>();
         MeshRenderer renderer = go.AddComponent<MeshRenderer>();
         filter.mesh = mesh;
-        renderer.materials = materials.ToArray();
+        List<Material> mats = new List<Material>();
+        for (int i = 0; i < materials.Count; i++) {
+            mats.Add(materials[i].BuildMaterial());
+        }
+        renderer.materials = mats.ToArray();
 
         switch (collider) {
             case ColliderType.Mesh:
@@ -101,8 +101,8 @@ public class LevelElement : Serializable {
 
     public XElement Serialize() {
         List<XElement> xMat = new List<XElement>();
-        foreach (string mat in materialNames) {
-            xMat.Add(SerializeValue("name", mat));
+        foreach (LevelMat mat in materials) {
+            xMat.Add(mat.Serialize());
         }
         return new XElement(
             "lel", // lel = level element
@@ -224,14 +224,13 @@ public class LevelElement : Serializable {
         collider = (ColliderType)Enum.Parse(typeof(ColliderType), DeserializeValue(xml, "collider"));
         mesh = XmlMesh(xml.Element("mesh"));
         List<XElement> xMat = xml.Element("mat").Elements().ToList();
-        if (materialNames == null) {
-            materialNames = new List<string>();
+        if (materials == null) {
+            materials = new List<LevelMat>();
         }
-        else {
-            materialNames.Clear();
-        }
+        materials.Clear();
         foreach (XElement x in xMat) {
-            materialNames.Add(x.Attribute("value").Value);
+            materials.Add(new LevelMat());
+            materials.Last().Deserialize(x);
         }
     }
 }

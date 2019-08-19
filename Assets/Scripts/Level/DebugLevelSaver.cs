@@ -15,18 +15,28 @@ public class DebugLevelSaver : MonoBehaviour {
         lvl.elements = new List<LevelElement>();
         for (int i = 0; i < transform.childCount; i++) {
             GameObject child = transform.GetChild(i).gameObject;
+            MeshCollider collider = child.GetComponent<MeshCollider>();
+            MeshFilter filter = child.GetComponent<MeshFilter>();
+            MeshRenderer renderer = child.GetComponent<MeshRenderer>();
+            TextureMarker texMarker = child.GetComponent<TextureMarker>();
+
             LevelElement e = new LevelElement();
             e.name = child.name;
             e.position = child.transform.localPosition;
             e.rotation = child.transform.localRotation;
             e.scale = child.transform.localScale;
-            e.collider = child.GetComponent<MeshCollider>() == null ? ColliderType.None : ColliderType.Mesh;
-            if (child.GetComponent<MeshFilter>() != null) {
-                e.mesh = child.GetComponent<MeshFilter>().mesh;
-                e.materials = child.GetComponent<MeshRenderer>().materials.ToList();
-                e.materialNames = new List<string>();
-                foreach (Material m in e.materials) {
-                    e.materialNames.Add(m.name);
+            e.collider = collider == null ? ColliderType.None : ColliderType.Mesh;
+            if (filter != null) {
+                e.mesh = filter.mesh;
+                e.materials = new List<LevelMat>();
+                for (int m = 0; m < renderer.materials.Length; m++) {
+                    LevelMat mat = new LevelMat();
+                    mat.shader = renderer.materials[m].shader.name;
+                    mat.color = renderer.materials[m].GetColor("_Color");
+                    if (texMarker != null) {
+                        mat.texture = texMarker.textures[m];
+                    }
+                    e.materials.Add(mat);
                 }
             }
             lvl.elements.Add(e);
@@ -35,5 +45,10 @@ public class DebugLevelSaver : MonoBehaviour {
         XDocument doc = new XDocument(xml);
         string path = ConfigManager.basePath + "level\\" + lvlName + ".xml";
         doc.Save(path);
+
+        Level reload = new Level();
+        reload.Deserialize(xml);
+        reload.LoadLevel();
+        gameObject.SetActive(false);
     }
 }

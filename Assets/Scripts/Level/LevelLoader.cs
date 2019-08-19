@@ -3,8 +3,6 @@ using System.Xml.Linq;
 using UnityEngine;
 
 public class LevelLoader : MonoBehaviour {
-    public Material testMaterial;
-
     public Level level;
 
     void Awake() {
@@ -25,7 +23,7 @@ public class LevelLoader : MonoBehaviour {
                     level.UnloadLevel();
                 }
                 level.Deserialize(elem);
-                level.LoadLevel(testMaterial);
+                level.LoadLevel();
                 LevelElement spawn = level.elements.Find(l => l.name == "spawn");
                 if (spawn != null) {
                     GameObject.FindGameObjectWithTag("copter").transform.position = spawn.position;

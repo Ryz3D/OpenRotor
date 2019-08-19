@@ -13,10 +13,10 @@ public class Level : Serializable {
 
     private GameObject go;
 
-    public void LoadLevel(Material material) {
+    public void LoadLevel() {
         go = new GameObject("level");
         foreach (LevelElement e in elements) {
-            e.Load(go, material);
+            e.Load(go);
         }
         StaticDataAccess.level = this;
     }
