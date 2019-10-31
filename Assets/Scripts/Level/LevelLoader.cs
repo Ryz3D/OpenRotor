@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevelLoader : MonoBehaviour {
     public Level level;
+    public LayerMask layer;
 
     void Awake() {
         if (SceneParam.selectedLevel == "") {

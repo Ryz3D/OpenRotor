@@ -32,7 +32,7 @@ public class OSDCapacity : OSDElement {
 
     public override void Update() {
         if (lipo != null) {
-            text.text = "CAP  " + Mathf.Round((lipo.capacity - lipo.capacityLeft) * 1000.0f).ToString() + "mAh";
+            text.text = "CAP  " + Mathf.Round((lipo.capacity - lipo.capacityLeft) * 1000.0f).ToString() + "mAh / " + Mathf.Round(lipo.capacity * 1000.0f) + "mAh";
         }
     }
 }

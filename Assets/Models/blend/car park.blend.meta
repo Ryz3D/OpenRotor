@@ -38,6 +38,7 @@ ModelImporter:
     4300008: Circle
     7400000: Default Take
     9500000: //RootNode
+    2186277476908879412: ImportLogs
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -65,7 +66,7 @@ ModelImporter:
       name: sign
     second: {fileID: 2100000, guid: c76a5c96adc163f48815fc17bb189252, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

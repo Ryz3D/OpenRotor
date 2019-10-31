@@ -35,6 +35,7 @@ public class LevelElement : Serializable {
         go.transform.localPosition = position;
         go.transform.localRotation = rotation;
         go.transform.localScale = scale;
+        go.layer = LayerMask.NameToLayer("Terrain");
 
         MeshFilter filter = go.AddComponent<MeshFilter>();
         MeshRenderer renderer = go.AddComponent<MeshRenderer>();

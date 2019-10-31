@@ -13,6 +13,9 @@ public class Quad : MonoBehaviour, Serializable {
 	public float areaFront;
 	public float rotDrag;
 	public float propwashFactor;
+	public float groundEffectHeight;
+	public float groundEffectFactor;
+
 	public PIDProfile pidProfile;
 	public RateProfile rateProfile;
 
@@ -66,13 +69,13 @@ public class Quad : MonoBehaviour, Serializable {
 			rb.angularVelocity = Vector3.zero;
 
 			if (lipo != null) {
-				lipo.ChargeTo(4.2f);
+				lipo.ChargeTo(lipo.maxVoltage);
 			}
 		}
 
 		if (StaticDataAccess.config.input.GetBtnFlip()) {
 			RaycastHit rayHit;
-			if (Physics.Raycast(transform.position, Vector3.down, out rayHit)) {
+			if (Physics.Raycast(transform.position, Vector3.down, out rayHit, LayerMask.GetMask("Terrain"))) {
 				transform.position = rayHit.point + Vector3.up * 3.0f;
 			}
 			else {
@@ -125,30 +128,42 @@ public class Quad : MonoBehaviour, Serializable {
 				float thrFraction = thrCurrent / lipo.expectedCurrent;
 				float rotFraction = rotCurrent / lipo.expectedCurrent;
 				float power = lipo.actualCurrent * lipo.totalVoltage;
+				float groundEffect = 0.0f;
+				if (groundEffectFactor > 0) {
+					RaycastHit rayHit;
+					if (Physics.Raycast(transform.position, Vector3.down, out rayHit, groundEffectHeight, LayerMask.GetMask("Terrain"))) {
+						groundEffect = (groundEffectHeight - rayHit.distance) * groundEffectFactor / groundEffectHeight;
+					}
+				}
 
 				if (powertrain == null) {
-					force = 0.017f * Vector3.up * power * thrFraction;
+					force = 0.017f * Vector3.up * power * thrFraction * (1 + groundEffect);
 					torque = 0.01f * new Vector3(pitchOut, yawOut, -rollOut) * power * rotFraction;
 				}
 				else {
-					force = 0.025f * Vector3.up * power * thrFraction;
+					force = 0.025f * Vector3.up * power * thrFraction * (1 + groundEffect);
 					torque = 0.07f * new Vector3(pitchOut, yawOut, -rollOut) * power * rotFraction;
 				}
 			}
 		}
 
-		Vector2 forw2d = new Vector2(transform.forward.x, transform.forward.z);
-		Vector2 vel2d = new Vector2(rb.velocity.x, rb.velocity.z);
-		float propwash = force.magnitude * propwashFactor * (1 - Vector2.Dot(forw2d.normalized, vel2d.normalized)) / (0.1f * vel2d.magnitude + 1.5f);
-		if (vel2d.magnitude < 2.0f) {
-			// fixes too much propwash while hovering
-			propwash *= vel2d.magnitude + 0.05f;
+		if (propwashFactor > 0) {
+			Vector2 forw2d = new Vector2(transform.forward.x, transform.forward.z);
+			Vector2 vel2d = new Vector2(rb.velocity.x, rb.velocity.z);
+			float propwash = force.magnitude * propwashFactor * (1 - Vector2.Dot(forw2d.normalized, vel2d.normalized)) / (0.1f * vel2d.magnitude + 1.5f);
+			if (vel2d.magnitude < 2.0f) {
+				// fixes too much propwash while hovering
+				propwash *= vel2d.magnitude + 0.05f;
+			}
+			quadMesh.localEulerAngles = new Vector3(
+				UnityEngine.Random.Range(-1.0f, 1.0f),
+				UnityEngine.Random.Range(-1.0f, 1.0f),
+				UnityEngine.Random.Range(-1.0f, 1.0f)
+			) * propwash;
 		}
-		quadMesh.localEulerAngles = new Vector3(
-            UnityEngine.Random.Range(-1.0f, 1.0f),
-			UnityEngine.Random.Range(-1.0f, 1.0f),
-			UnityEngine.Random.Range(-1.0f, 1.0f)
-		) * propwash;
+		else {
+			quadMesh.localEulerAngles = Vector3.zero;
+		}
 
 		float aoaSine = Vector3.Dot(transform.forward, rb.velocity.normalized);
 		float drag = Mathf.Lerp(areaFront, areaTop, Mathf.Abs(aoaSine)) * rb.velocity.sqrMagnitude * Cd;

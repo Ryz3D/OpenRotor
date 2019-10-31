@@ -5,6 +5,7 @@ public class Lipo : MonoBehaviour {
     public AnimationCurve voltageCurve;
     public AnimationCurve maximumCurrentCurve;
 
+    public float maxVoltage;
     public bool doesDischarge;
     public bool doesSag;
     public int cellCount;
@@ -67,7 +68,7 @@ public class Lipo : MonoBehaviour {
     void Start() {
         cellCapacities = new float[cellCount];
         cellVoltageSag = new float[cellCount];
-        ChargeTo(4.2f);
+        ChargeTo(maxVoltage);
     }
 
     void Update() {

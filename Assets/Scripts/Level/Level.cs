@@ -15,6 +15,7 @@ public class Level : Serializable {
 
     public void LoadLevel() {
         go = new GameObject("level");
+        go.layer = LayerMask.NameToLayer("Terrain");
         foreach (LevelElement e in elements) {
             e.Load(go);
         }
