@@ -29,7 +29,12 @@ public class ConfigDataManager : MonoBehaviour {
 
     public void Reload() {
         if (fs == null) {
-            fs = new FSWindows();
+            if (Application.isMobilePlatform) {
+                fs = new FSSysIO();
+            }
+            else {
+                fs = new FSSysIO();
+            }
         }
 
         // deprecated, due to settings page
@@ -53,7 +58,7 @@ public class ConfigDataManager : MonoBehaviour {
         }
 
         if (!PlayerPrefs.HasKey("inputConfig")) {
-            string path = ConfigManager.basePath + "input\\default.xml";
+            string path = ConfigManager.basePath + "input" + System.IO.Path.DirectorySeparatorChar + "default.xml";
             if (fs.WhatIs(path) == FileType.Nonexistent) {
                 XDocument doc = new XDocument(CustomInput.defaultInput.Serialize());
                 fs.Write(path, doc.ToString());

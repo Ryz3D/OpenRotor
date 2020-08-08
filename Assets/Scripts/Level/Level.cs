@@ -28,7 +28,7 @@ public class Level : Serializable {
     }
 
     public void LoadPreview() {
-        string totalPath = ConfigManager.basePath + "level\\" + previewPath;
+        string totalPath = ConfigManager.basePath + "level" + System.IO.Path.DirectorySeparatorChar + previewPath;
         if (StaticDataAccess.config.fs.WhatIs(totalPath) == FileType.File) {
             Texture2D tex = new Texture2D(768, 160);
             tex.LoadImage(StaticDataAccess.config.fs.ReadB(totalPath));

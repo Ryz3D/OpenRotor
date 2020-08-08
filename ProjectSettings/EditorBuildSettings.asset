@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/InputSettings.unity
     guid: 8debb10506c989d4cac1eb66fd02b99d
   - enabled: 1
+    path: Assets/Scenes/InputWizard.unity
+    guid: badf9a34b84b2394c95dffc74e49012b
+  - enabled: 1
     path: Assets/Scenes/GameSettings.unity
     guid: 68a9d0230fd09e648a83e4df2c1dda02
   - enabled: 1

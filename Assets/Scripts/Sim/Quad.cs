@@ -47,8 +47,8 @@ public class Quad : MonoBehaviour, Serializable {
 		pidPitch = new PID();
 		pidYaw = new PID();
 
-		XDocument thrcur = XDocument.Parse(StaticDataAccess.config.fs.Read(ConfigManager.basePath + "/thrcur.xml"));
-		XDocument curthr = XDocument.Parse(StaticDataAccess.config.fs.Read(ConfigManager.basePath + "/curthr.xml"));
+		XDocument thrcur = XDocument.Parse(StaticDataAccess.config.fs.Read(ConfigManager.basePath + "thrcur.xml"));
+		XDocument curthr = XDocument.Parse(StaticDataAccess.config.fs.Read(ConfigManager.basePath + "curthr.xml"));
 		powertrain = new Powertrain();
 		powertrain.throttleCurrentCurve.Deserialize(thrcur.Element("dataCurve"));
 		powertrain.currentThrustCurve.Deserialize(curthr.Element("dataCurve"));
@@ -56,9 +56,11 @@ public class Quad : MonoBehaviour, Serializable {
 
 	void FixedUpdate() {
 		if (StaticDataAccess.config == null) {
+			Debug.LogWarning("StaticDataAccess.config not found");
 			return;
 		}
 		if (StaticDataAccess.config.input == null) {
+			Debug.LogWarning("StaticDataAccess.config.input not found");
 			return;
 		}
 
@@ -187,7 +189,7 @@ public class Quad : MonoBehaviour, Serializable {
         }
         else {
             try {
-                return float.Parse(value.Attribute("value").Value);
+                return FloatParser.stof(value.Attribute("value").Value);
             }
             catch (FormatException) {
                 Debug.LogError("couldn't parse '" + name + "' in quad config");
@@ -210,7 +212,7 @@ public class Quad : MonoBehaviour, Serializable {
         return new XElement(
             name,
             new XAttribute(
-                "value", value.ToString()
+                "value", FloatParser.ftos(value)
             )
         );
     }
@@ -218,6 +220,7 @@ public class Quad : MonoBehaviour, Serializable {
     public XElement Serialize() {
         // bloody hell clean this up
         // look into marshaling or something
+		// what?
         return new XElement(
             "quad",
             WriteValue("idleThrottle", idleThrottle),

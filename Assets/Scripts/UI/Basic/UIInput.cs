@@ -35,7 +35,7 @@ public class UIInput : MonoBehaviour {
 		if (StaticDataAccess.config.input == null) {
 			return;
 		}
-	
+
 		string cancelStr = "empty";
 		string submitStr = "empty";
 		string horizontalStr = "empty";

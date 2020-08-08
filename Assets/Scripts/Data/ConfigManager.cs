@@ -1,12 +1,13 @@
+using System.IO;
+
 class ConfigManager {
     public static string basePath {
         get {
             string s = UnityEngine.Application.persistentDataPath;
-            s = s.Replace('/', '\\');
-            if (s.EndsWith("\\"))
+            if (s.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 return s;
             else
-                return s + "\\";
+                return s + Path.DirectorySeparatorChar;
         }
     }
 }

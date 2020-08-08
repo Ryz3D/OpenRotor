@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
-using UnityEngine;
 
 public class PIDProfile : Serializable {
     public float rollP, rollI, rollD;
@@ -12,13 +11,13 @@ public class PIDProfile : Serializable {
             name,
             new XAttribute(
                 "value",
-                value
+                FloatParser.ftos(value)
             )
         );
     }
 
     private float ReadValue(XElement xml, string name) {
-        return float.Parse(xml.Element(name).Attribute("value").Value);
+        return FloatParser.stof(xml.Element(name).Attribute("value").Value);
     }
 
     public XElement Serialize() {

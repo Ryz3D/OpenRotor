@@ -18,6 +18,7 @@ public class LevelElement : Serializable {
     public ColliderType collider;
     public Mesh mesh;
     public List<LevelMat> materials;
+    public LevelElementAnimation animation;
 
     public LevelElement() {
         name = "";
@@ -31,7 +32,7 @@ public class LevelElement : Serializable {
 
     public void Load(GameObject parent) {
         GameObject go = new GameObject(name);
-        go.transform.parent = parent.transform;
+        go.transform.SetParent(parent.transform);
         go.transform.localPosition = position;
         go.transform.localRotation = rotation;
         go.transform.localScale = scale;
@@ -40,11 +41,9 @@ public class LevelElement : Serializable {
         MeshFilter filter = go.AddComponent<MeshFilter>();
         MeshRenderer renderer = go.AddComponent<MeshRenderer>();
         filter.mesh = mesh;
-        List<Material> mats = new List<Material>();
         for (int i = 0; i < materials.Count; i++) {
-            mats.Add(materials[i].BuildMaterial());
+            materials[i].BuildMaterial(renderer);
         }
-        renderer.materials = mats.ToArray();
 
         switch (collider) {
             case ColliderType.Mesh:
@@ -52,6 +51,10 @@ public class LevelElement : Serializable {
                 break;
             default:
                 break;
+        }
+
+        if (animation != null) {
+            go.AddComponent<LevelElementAnimator>().animCurves = animation.animCurves;
         }
     }
 
@@ -66,11 +69,11 @@ public class LevelElement : Serializable {
     }
 
     private string VecStr(Vector3 vec) {
-        return string.Format("{0},{1},{2}", vec.x, vec.y, vec.z);
+        return string.Format("{0},{1},{2}", FloatParser.ftos(vec.x), FloatParser.ftos(vec.y), FloatParser.ftos(vec.z));
     }
 
     private string QuatStr(Quaternion quat) {
-        return string.Format("{0},{1},{2},{3}", quat.x, quat.y, quat.z, quat.w);
+        return string.Format("{0},{1},{2},{3}", FloatParser.ftos(quat.x), FloatParser.ftos(quat.y), FloatParser.ftos(quat.z), FloatParser.ftos(quat.w));
     }
 
     private XElement MeshXml(Mesh mesh) {
@@ -105,8 +108,7 @@ public class LevelElement : Serializable {
         foreach (LevelMat mat in materials) {
             xMat.Add(mat.Serialize());
         }
-        return new XElement(
-            "lel", // lel = level element
+        List<XElement> content = new List<XElement>() {
             SerializeValue("name", name),
             SerializeValue("pos", VecStr(position)),
             SerializeValue("rot", QuatStr(rotation)),
@@ -117,6 +119,13 @@ public class LevelElement : Serializable {
                 "mat",
                 xMat
             )
+        };
+        if (animation != null) {
+            content.Add(animation.Serialize());
+        }
+        return new XElement(
+            "lel", // lel = level element
+            content.ToArray()
         );
     }
 
@@ -138,7 +147,7 @@ public class LevelElement : Serializable {
         Vector3 vec = Vector3.zero;
         for (int i = 0; i < split.Length; i++) {
             try {
-                vec[i] = float.Parse(split[i]);
+                vec[i] = FloatParser.stof(split[i]);
             }
             catch (FormatException) {
                 Debug.LogError("LevelElement.StrVec just received proper bullshit: '" + str + "'");
@@ -157,7 +166,7 @@ public class LevelElement : Serializable {
         Quaternion quat = Quaternion.identity;
         for (int i = 0; i < split.Length; i++) {
             try {
-                quat[i] = float.Parse(split[i]);
+                quat[i] = FloatParser.stof(split[i]);
             }
             catch (FormatException) {
                 Debug.LogError("LevelElement.StrQuat just received proper bullshit: '" + str + "'");
@@ -232,6 +241,10 @@ public class LevelElement : Serializable {
         foreach (XElement x in xMat) {
             materials.Add(new LevelMat());
             materials.Last().Deserialize(x);
+        }
+        if (xml.Element("anim") != null) {
+            animation = new LevelElementAnimation();
+            animation.Deserialize(xml.Element("anim"));
         }
     }
 }

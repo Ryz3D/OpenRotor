@@ -19,6 +19,7 @@ public class DebugLevelSaver : MonoBehaviour {
             MeshFilter filter = child.GetComponent<MeshFilter>();
             MeshRenderer renderer = child.GetComponent<MeshRenderer>();
             TextureMarker texMarker = child.GetComponent<TextureMarker>();
+            LevelElementAnimator anim = child.GetComponent<LevelElementAnimator>();
 
             LevelElement e = new LevelElement();
             e.name = child.name;
@@ -39,11 +40,15 @@ public class DebugLevelSaver : MonoBehaviour {
                     e.materials.Add(mat);
                 }
             }
+            if (anim != null) {
+                e.animation = new LevelElementAnimation();
+                e.animation.animCurves = anim.animCurves;
+            }
             lvl.elements.Add(e);
         }
         XElement xml = lvl.Serialize();
         XDocument doc = new XDocument(xml);
-        string path = ConfigManager.basePath + "level\\" + lvlName + ".xml";
+        string path = ConfigManager.basePath + "level" + System.IO.Path.DirectorySeparatorChar + lvlName + ".xml";
         doc.Save(path);
 
         Level reload = new Level();

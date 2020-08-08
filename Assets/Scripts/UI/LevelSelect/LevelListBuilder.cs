@@ -52,9 +52,9 @@ public class LevelListBuilder : MonoBehaviour {
             RectTransform rectText = goText.AddComponent<RectTransform>();
             Text text = goText.AddComponent<Text>();
 
-            go.transform.parent = transform;
-            goImg.transform.parent = go.transform;
-            goText.transform.parent = go.transform;
+            go.transform.SetParent(transform);
+            goImg.transform.SetParent(go.transform);
+            goText.transform.SetParent(go.transform);
 
             rect.anchorMin = new Vector2(0.0f, 1.0f - yOffset);
             rect.anchorMax = new Vector2(1.0f, 1.0f - yOffset);

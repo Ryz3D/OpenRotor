@@ -155,12 +155,26 @@ public class CustomInput : RCInput, Serializable {
             case "simpleAxis":
                 axis = new SimpleInputAxis();
                 break;
+            case "staticAxis":
+                axis = new StaticInputAxis();
+                break;
         }
         axis.Deserialize(xml);
         return axis;
     }
 
     public void Deserialize(XElement xml) {
+        if (xml.Attribute("mobile") != null) {
+            if (xml.Attribute("mobile").Value == "true") {
+                // SetActive didn't work. wtf.
+                GameObject go = GameObject.Find("mobileInput");
+                if (go != null) {
+                    for (int i = 0; i < go.transform.childCount; i++) {
+                        go.transform.GetChild(i).gameObject.SetActive(true);
+                    }
+                }
+            }
+        }
         List<XElement> axisElem = new List<XElement>(xml.Elements());
         for (int i = 0; i < axisElem.Count; i++) {
             string axisKey = axisElem[i].Attribute("key").Value;

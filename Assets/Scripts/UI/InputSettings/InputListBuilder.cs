@@ -15,13 +15,24 @@ public class InputListBuilder : MonoBehaviour {
     public Color colorActive;
     public Color colorInactive;
 
+    public void RemoveCurrent() {
+        List<string> fileList = StaticDataAccess.config.fs.ListFiles(ConfigManager.basePath + "input").Where(s => s.EndsWith(".xml")).ToList();
+        if (fileList.Count == 1) {
+            Debug.Log("won't remove last input config");
+        }
+        else {
+            StaticDataAccess.config.fs.Remove(PlayerPrefs.GetString("inputConfig"));
+            PlayerPrefs.SetString("inputConfig", StaticDataAccess.config.fs.ListFiles(ConfigManager.basePath + "input").Where(s => s.EndsWith(".xml")).ToList()[0]);
+        }
+    }
+
     public void Rebuild() {
         List<string> paths = new List<string>();
         List<string> inputNames = new List<string>();
         foreach (string p in StaticDataAccess.config.fs.ListFiles(ConfigManager.basePath + "input")) {
             if (p.EndsWith(".xml")) {
                 paths.Add(p);
-                string file = p.Split('\\').Last();
+                string file = p.Split(System.IO.Path.DirectorySeparatorChar).Last();
                 inputNames.Add(file.Substring(0, file.Length - 4));
             }
         }
@@ -33,7 +44,7 @@ public class InputListBuilder : MonoBehaviour {
         }
 
         for (int i = 0; i < inputNames.Count; i++) {
-            // this will probably need some cleanup
+            // TODO: this will probably need some cleanup
 
             GameObject go = new GameObject("uiElement");
             RectTransform rect = go.AddComponent<RectTransform>();
@@ -46,8 +57,8 @@ public class InputListBuilder : MonoBehaviour {
             RectTransform rectText = goText.AddComponent<RectTransform>();
             Text text = goText.AddComponent<Text>();
 
-            go.transform.parent = transform;
-            goText.transform.parent = go.transform;
+            go.transform.SetParent(transform);
+            goText.transform.SetParent(go.transform);
 
             rect.anchorMin = new Vector2(normalMargin, 1.0f - yOffset);
             rect.anchorMax = new Vector2(1.0f - normalMargin, 1.0f - yOffset);
@@ -67,7 +78,7 @@ public class InputListBuilder : MonoBehaviour {
             string pathBuf = paths[i];
             btn.onClick.AddListener(() => {
                 PlayerPrefs.SetString("inputConfig", pathBuf);
-                SceneManager.UnloadSceneAsync(gameObject.scene);
+                Rebuild();
             });
 
             btnExtend.speed = 10;
@@ -97,6 +108,5 @@ public class InputListBuilder : MonoBehaviour {
     }
 
     void Update() {
-
     }
 }

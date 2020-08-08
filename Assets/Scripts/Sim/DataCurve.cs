@@ -69,8 +69,8 @@ public class DataCurve : Serializable {
         }
         points.Clear();
         foreach (XElement elem in xml.Elements()) {
-            float x = float.Parse(elem.Attribute("x").Value);
-            float y = float.Parse(elem.Attribute("y").Value);
+            float x = FloatParser.stof(elem.Attribute("x").Value);
+            float y = FloatParser.stof(elem.Attribute("y").Value);
             points.Add(x, y);
         }
     }
@@ -82,11 +82,11 @@ public class DataCurve : Serializable {
                 "dataPoint",
                 new XAttribute(
                     "x",
-                    entry.Key.ToString()
+                    FloatParser.ftos(entry.Key)
                 ),
                 new XAttribute(
                     "y",
-                    entry.Value.ToString()
+                    FloatParser.ftos(entry.Value)
                 )
             ));
         }

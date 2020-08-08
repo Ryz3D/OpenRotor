@@ -29,6 +29,7 @@ public abstract class FileSystem {
     public abstract List<string> ListFiles(string path);
     public abstract List<string> ListDir(string path);
     public abstract void MakeDir(string path);
+    public abstract FSStatus Remove(string path);
 
     protected void CheckStatus() {
         if (status != FSStatus.Success) {

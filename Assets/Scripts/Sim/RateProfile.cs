@@ -50,13 +50,13 @@ public class RateProfile : Serializable {
             name,
             new XAttribute(
                 "value",
-                value
+                FloatParser.ftos(value)
             )
         );
     }
 
     private float ReadValue(XElement xml, string name) {
-        return float.Parse(xml.Element(name).Attribute("value").Value);
+        return FloatParser.stof(xml.Element(name).Attribute("value").Value);
     }
 
     public XElement Serialize() {
